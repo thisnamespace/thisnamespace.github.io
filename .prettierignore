@@ -1,0 +1,28 @@
+# Build outputs
+dist
+build
+.storybook-static
+playwright-report
+
+# Dependencies
+node_modules
+.bun
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# Package manager
+bun.lockb
+package-lock.json
+yarn.lock
+
+# Misc
+coverage
+.DS_Store
+*.log

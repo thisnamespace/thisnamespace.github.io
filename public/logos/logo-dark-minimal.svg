@@ -1,0 +1,63 @@
+<svg viewBox="60 60 280 310" xmlns="http://www.w3.org/2000/svg">
+  <!-- Globe wireframe (representing 3 continents) -->
+  <g opacity="0.15" stroke="#64748b" stroke-width="1" fill="none">
+    <circle cx="200" cy="200" r="120"/>
+    <ellipse cx="200" cy="200" rx="120" ry="60"/>
+    <ellipse cx="200" cy="200" rx="60" ry="120"/>
+    <line x1="80" y1="200" x2="320" y2="200"/>
+    <path d="M 200 80 Q 240 140 200 200 T 200 320" stroke="#64748b"/>
+  </g>
+
+  <!-- Main code brackets with namespace styling -->
+  <g transform="translate(200, 200)">
+    <!-- Left bracket -->
+    <path d="M -80 -60 L -100 -60 L -100 60 L -80 60"
+          stroke="#06b6d4"
+          stroke-width="6"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Right bracket -->
+    <path d="M 80 -60 L 100 -60 L 100 60 L 80 60"
+          stroke="#06b6d4"
+          stroke-width="6"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+    </path>
+
+    <!-- Center dots representing "this" - styled like code -->
+    <g fill="#f59e0b">
+      <circle cx="-30" cy="-20" r="5"/>
+      <circle cx="0" cy="-20" r="5"/>
+      <circle cx="30" cy="-20" r="5"/>
+    </g>
+
+    <!-- Namespace double colon -->
+    <g fill="#10b981">
+      <circle cx="-10" cy="10" r="6"/>
+      <circle cx="10" cy="10" r="6"/>
+    </g>
+
+    <!-- Airplane path showing travel (simplified) -->
+    <path d="M -70 30 L -40 40 L 40 -10 L 70 -20"
+          stroke="#8b5cf6"
+          stroke-width="2"
+          fill="none"
+          stroke-dasharray="4 4"
+          opacity="0.6">
+      <animate attributeName="stroke-dashoffset" from="0" to="-8" dur="1s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Small airplane icon -->
+    <g transform="translate(70, -20) rotate(-25)">
+      <path d="M 0 0 L -3 -8 L 0 -6 L 3 -8 Z M 0 -2 L -6 0 L 6 0"
+            fill="#8b5cf6"
+            opacity="0.8"/>
+    </g>
+  </g>
+</svg>
