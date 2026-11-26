@@ -4,6 +4,8 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ScrollManager from './components/ScrollManager';
+import Shortcuts from './components/Shortcuts';
+import { shortcuts } from './data/content';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -15,6 +17,11 @@ function App() {
         <CssBaseline />
         <Router>
           <ScrollManager />
+          <Shortcuts
+            title={shortcuts.title}
+            toggleLabel={shortcuts.toggleLabel}
+            keys={shortcuts.keys}
+          />
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
             <Box component="main" sx={{ flexGrow: 1 }}>

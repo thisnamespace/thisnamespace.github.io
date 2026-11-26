@@ -1,4 +1,5 @@
 import { Box, Container, Link, Stack, Typography } from '@mui/material';
+import { OPEN_SHORTCUTS_EVENT } from '../Shortcuts';
 import { profile } from '../../data/content';
 
 const Footer = () => {
@@ -27,6 +28,16 @@ const Footer = () => {
             </Link>
             <Link href={`mailto:${profile.email}`} variant="body2">
               Email
+            </Link>
+            <Link
+              component="button"
+              type="button"
+              variant="body2"
+              data-testid="open-shortcuts"
+              onClick={() => window.dispatchEvent(new Event(OPEN_SHORTCUTS_EVENT))}
+              sx={{ display: { xs: 'none', md: 'inline' } }}
+            >
+              Keyboard shortcuts
             </Link>
           </Stack>
         </Stack>

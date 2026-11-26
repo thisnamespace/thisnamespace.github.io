@@ -77,7 +77,14 @@ const Hero = () => (
           </Stack>
         </Box>
 
-        <DeliveryLoop title={loopIntro.title} stages={loopStages} closing={loopIntro.closing} />
+        <DeliveryLoop
+          title={loopIntro.title}
+          stages={loopStages}
+          closing={loopIntro.closing}
+          runLabel={loopIntro.runLabel}
+          rerunLabel={loopIntro.rerunLabel}
+          stopLabel={loopIntro.stopLabel}
+        />
       </Box>
     </Container>
   </Box>

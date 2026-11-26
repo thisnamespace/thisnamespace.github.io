@@ -150,3 +150,110 @@ test.describe('Brands', () => {
     }
   });
 });
+
+test.describe('Delivery loop', () => {
+  test('a stage opens to show the belief behind it, and closes again', async ({ page }) => {
+    await page.goto('/');
+
+    const build = page.getByTestId('loop-stage-build');
+    await expect(build).toHaveAttribute('aria-expanded', 'false');
+
+    await build.click();
+    await expect(build).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByText('Let the tools do the typing.')).toBeVisible();
+
+    // Opening another stage closes the first.
+    await page.getByTestId('loop-stage-measure').click();
+    await expect(build).toHaveAttribute('aria-expanded', 'false');
+
+    await page.getByTestId('loop-stage-measure').click();
+    await expect(page.getByTestId('loop-stage-measure')).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('running the loop steps through every stage and then offers another round', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    const run = page.getByTestId('loop-run');
+    await expect(run).toHaveText('Run the loop');
+
+    await run.click();
+    await expect(run).toHaveText('Stop');
+    await expect(page.getByTestId('loop-stage-design')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByTestId('loop-stage-measure')).toHaveAttribute('aria-expanded', 'true', {
+      timeout: 8000,
+    });
+    await expect(run).toHaveText('Run it again', { timeout: 8000 });
+  });
+
+  test('the loop can be stopped part way', async ({ page }) => {
+    await page.goto('/');
+
+    const run = page.getByTestId('loop-run');
+    await run.click();
+    await run.click();
+    await expect(run).toHaveText('Run the loop');
+  });
+});
+
+test.describe('Page speed', () => {
+  test('reports live numbers for this visit', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.getByTestId('metric-load')).toContainText(/\d+\.\d+ s/);
+    await expect(page.getByTestId('metric-paint')).toContainText(/\d+\.\d+ s/);
+    await expect(page.getByTestId('metric-shift')).toContainText(/\d\.\d\d/);
+    await expect(page.getByTestId('metric-weight')).toContainText(/kB|MB|From cache/);
+  });
+});
+
+test.describe('Keyboard shortcuts', () => {
+  /** Opens the page and waits until the shortcut listener is attached. */
+  const openWithShortcuts = async (page: Page, state: 'on' | 'off' = 'on') => {
+    await page.goto('/');
+    await expect(page.locator('body')).toHaveAttribute('data-shortcuts', state);
+  };
+
+  test('number keys jump to sections', async ({ page }) => {
+    await openWithShortcuts(page);
+
+    await page.keyboard.press('2');
+    await expect(page.locator('#journey')).toBeInViewport();
+
+    await page.keyboard.press('4');
+    await expect(page.locator('#contact')).toBeInViewport();
+  });
+
+  test('T moves through the theme settings', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openWithShortcuts(page);
+
+    // system -> light -> dark
+    await page.keyboard.press('t');
+    await page.keyboard.press('t');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
+  });
+
+  test('? opens the list, and the shortcuts can be switched off', async ({ page }) => {
+    await openWithShortcuts(page);
+
+    await page.keyboard.press('?');
+    const dialog = page.getByRole('dialog', { name: 'Keyboard shortcuts' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByTestId('shortcut-list')).toContainText('Go to contact');
+
+    await dialog.getByLabel('Use single-key shortcuts').uncheck();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+
+    await page.keyboard.press('4');
+    await expect(page).not.toHaveURL(/#contact$/);
+
+    // The choice survives a reload.
+    await page.reload();
+    await expect(page.locator('body')).toHaveAttribute('data-shortcuts', 'off');
+    await page.keyboard.press('2');
+    await expect(page).not.toHaveURL(/#journey$/);
+  });
+});

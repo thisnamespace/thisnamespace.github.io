@@ -15,6 +15,8 @@ export interface LoopStage {
   name: string;
   /** How AI fits at this stage, in one sentence. */
   change: string;
+  /** The belief behind it, revealed when the stage is opened. */
+  detail: string;
 }
 
 /** Something Michael cares about: a title and a couple of sentences. */

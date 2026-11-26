@@ -22,6 +22,9 @@ export const profile: Profile = {
 export const loopIntro = {
   title: 'How I like AI to fit into building software',
   closing: 'What the measurements show shapes the next round.',
+  runLabel: 'Run the loop',
+  rerunLabel: 'Run it again',
+  stopLabel: 'Stop',
 };
 
 export const loopStages: LoopStage[] = [
@@ -29,23 +32,53 @@ export const loopStages: LoopStage[] = [
     id: 'design',
     name: 'Design',
     change: 'Designers working in code, building the first layer themselves.',
+    detail: 'The first version of an idea should be something you can click.',
   },
   {
     id: 'build',
     name: 'Build',
     change: 'AI coding tools, with agents and skills written for the work at hand.',
+    detail: 'Let the tools do the typing. The judgement stays with people.',
   },
   {
     id: 'review',
     name: 'Review',
     change: 'Shared practices, so quality holds as usage grows.',
+    detail: 'The same standard applies, whoever or whatever wrote it.',
   },
   {
     id: 'measure',
     name: 'Measure',
     change: 'Cost against what was delivered, and what reached customers.',
+    detail: 'If it has not reached a customer, it has not paid off yet.',
   },
 ];
+
+export const pageSpeed = {
+  title: 'This page, measured on your device',
+  note: 'These numbers come from your browser, for this visit. I care about performance, so the site should show its own.',
+  labels: {
+    load: 'Files loaded',
+    paint: 'Main content painted',
+    shift: 'Layout shift',
+    weight: 'Downloaded',
+  },
+  unavailable: 'Not reported by this browser',
+  cached: 'From cache',
+};
+
+export const shortcuts = {
+  title: 'Keyboard shortcuts',
+  toggleLabel: 'Use single-key shortcuts',
+  keys: [
+    { id: 'interests', key: '1', action: 'Go to what I care about', hash: '#interests' },
+    { id: 'journey', key: '2', action: 'Go to the route here', hash: '#journey' },
+    { id: 'experience', key: '3', action: 'Go to experience', hash: '#experience' },
+    { id: 'contact', key: '4', action: 'Go to contact', hash: '#contact' },
+    { id: 'theme', key: 'T', action: 'Switch between light, dark and system theme' },
+    { id: 'help', key: '?', action: 'Open this list' },
+  ],
+};
 
 export const clients = {
   title: 'Brands I have worked with',
