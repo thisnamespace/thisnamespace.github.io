@@ -21,7 +21,7 @@ export const profile: Profile = {
   github: 'https://github.com/thisnamespace',
   siteUrl: 'https://thisnamespace.com',
   headline: 'Fast, clear products. AI adopted on purpose.',
-  lead: 'I lead three software teams across multiple continents, and I care most about the front end: great user experiences and performance, on web and mobile. I am also the person who gets AI into how those teams design, build and ship, and who measures whether it paid off.',
+  lead: 'I lead three software teams, around 30 people across multiple continents, and two products. I care most about the front end: great user experiences and performance, on web and mobile. I also get AI into how those teams design, build and ship, and measure whether it paid off.',
 };
 
 export const loopIntro = {
@@ -245,7 +245,7 @@ export const experience: ExperienceEntry[] = [
     company: 'TeamViewer',
     title: 'Team Manager, Software Development',
     period: 'Jan 2025 to now',
-    note: '1E became part of TeamViewer in 2025. I manage three teams across multiple continents, in one department working across the DEX enterprise platform.',
+    note: '1E became part of TeamViewer in 2025. I manage three teams of around 30 people across multiple continents, covering two products, in one department working across the DEX enterprise platform.',
   },
   {
     id: '1e-head',
