@@ -228,8 +228,8 @@ export const experience: ExperienceEntry[] = [
 ];
 
 export const contact = {
-  title: 'Talk to me about your engineering organisation',
-  body: 'I am interested in conversations about leading engineering in consumer products, and about making AI a working part of how software gets built.',
+  title: 'Get in touch',
+  body: 'I enjoy comparing notes with other people working out how AI fits into the way software gets built. Email or LinkedIn is the best way to reach me.',
 };
 
 export const findCaseStudy = (slug: string | undefined): CaseStudy | undefined =>

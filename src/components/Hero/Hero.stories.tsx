@@ -25,9 +25,9 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole('heading', { level: 1 })).toHaveTextContent(profile.headline);
-    await expect(canvas.getByRole('link', { name: 'Email me' })).toHaveAttribute(
+    await expect(canvas.getByRole('link', { name: 'Get in touch' })).toHaveAttribute(
       'href',
-      `mailto:${profile.email}`
+      '/#contact'
     );
   },
 };

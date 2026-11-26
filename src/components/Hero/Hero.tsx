@@ -56,8 +56,13 @@ const Hero = () => (
             >
               Read the case studies
             </Button>
-            <Button href={`mailto:${profile.email}`} variant="outlined" size="large">
-              Email me
+            <Button
+              component={RouterLink}
+              to={{ pathname: '/', hash: '#contact' }}
+              variant="outlined"
+              size="large"
+            >
+              Get in touch
             </Button>
           </Stack>
         </Box>

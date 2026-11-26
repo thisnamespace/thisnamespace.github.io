@@ -1,7 +1,7 @@
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Box, Button, Container, Link, Typography } from '@mui/material';
+import { Box, Container, Link, Typography } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
-import { caseStudies, findCaseStudy, profile } from '../data/content';
+import { caseStudies, findCaseStudy } from '../data/content';
 import { usePageTitle } from '../hooks/usePageTitle';
 import NotFound from './NotFound';
 import { fonts } from '../styles/theme';
@@ -116,14 +116,6 @@ const CaseStudy = () => {
               {next.title}
             </Link>
           </Box>
-          <Button
-            href={`mailto:${profile.email}`}
-            variant="contained"
-            size="large"
-            sx={{ flexShrink: 0 }}
-          >
-            Email me about this
-          </Button>
         </Box>
       </Container>
     </Box>
