@@ -48,12 +48,9 @@ export const loopStages: LoopStage[] = [
 ];
 
 export const clients = {
-  title: 'Products people use every day',
-  body: 'I started as a developer in 2008 and spent years building for consumer brands before leading teams on enterprise software. That is where my attention to the person on the other side of the screen comes from.',
+  title: 'Built for brands people use every day',
+  body: 'I started as a developer in 2008 and spent my early career building for consumer brands. My leadership and AI work since has been at 1E and now TeamViewer, and the attention to the person on the other side of the screen came with me.',
   names: [
-    'TeamViewer',
-    '1E',
-    'AKQA',
     'Gatwick Airport',
     'Tesco',
     'Waitrose',
@@ -61,18 +58,19 @@ export const clients = {
     'NHS',
     'Mitsubishi Motors',
     'Peroni',
+    'AKQA',
   ],
 };
 
 export const caseStudies: CaseStudy[] = [
   {
     slug: 'ai-adoption',
-    area: 'AI adoption',
+    area: 'AI adoption, at 1E and TeamViewer',
     title: 'Rolling out AI across engineering, and measuring it',
     summary:
       'Tools, practices and policy introduced together, with reporting that sets cost against what was delivered.',
     overview: [
-      'Giving engineers an AI coding tool is the easy part. I rolled the tools out alongside the practices and policy that tell people when to reach for them, and I keep pushing adoption across the wider organisation.',
+      'Giving engineers an AI coding tool is the easy part. At 1E, and now at TeamViewer, I rolled the tools out alongside the practices and policy that tell people when to reach for them, and I keep pushing adoption across the wider organisation.',
       'The aim is smart use, not more use. Usage figures say how much AI a team consumes; they do not say what the business got for it. So I built reporting that sets what we spend on AI against the features it helped deliver, and I am taking that further, towards real-world conversions.',
     ],
     actions: [
@@ -87,7 +85,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: 'design-in-code',
-    area: 'Design and engineering',
+    area: 'Design and engineering, at 1E and TeamViewer',
     title: 'A design team that builds the first layer',
     summary:
       'Designers moved from Figma to Claude and now design in code, so engineers start from something that already works.',
@@ -106,12 +104,12 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: 'agents-and-skills',
-    area: 'Hands-on tooling',
+    area: 'Hands-on tooling, at 1E and TeamViewer',
     title: 'Agents, skills and the orchestration between them',
     summary:
       'Custom agents, reusable skills and the layers that coordinate them, built by me and not delegated.',
     overview: [
-      'I do not ask teams to work in a way I have not worked myself. I use AI heavily for my own coding and day-to-day tasks, and I build the pieces that make it useful at team scale.',
+      'I do not ask teams to work in a way I have not worked myself. At 1E and TeamViewer I use AI heavily for my own coding and day-to-day tasks, and I build the pieces that make it useful at team scale.',
       'That means agents for specific jobs, skills that capture how we do things so they can be reused, and orchestration layers that coordinate them across multi-step work.',
     ],
     actions: [
@@ -176,7 +174,7 @@ export const experience: ExperienceEntry[] = [
     company: 'TeamViewer',
     title: 'Team Manager, Software Development',
     period: 'Jan 2025 to now',
-    note: 'Leading a software development team; technical strategy and team development.',
+    note: '1E became part of TeamViewer in 2025. Leading a software development team; technical strategy and team development.',
   },
   {
     id: '1e-head',
