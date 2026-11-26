@@ -1,20 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within, userEvent } from '@storybook/test';
+import { expect, userEvent, within } from '@storybook/test';
+import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
-import { BrowserRouter } from 'react-router-dom';
 
 const meta = {
-  title: 'Components/Header',
+  title: 'Components/Layout/Header',
   component: Header,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <BrowserRouter>
+      <MemoryRouter>
         <Story />
-      </BrowserRouter>
+      </MemoryRouter>
     ),
   ],
 } satisfies Meta<typeof Header>;
@@ -25,45 +23,20 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    // Verify header is rendered
-    const header = canvas.getByRole('banner');
-    await expect(header).toBeInTheDocument();
-
-    // Verify navigation buttons exist
-    await expect(canvas.getByRole('button', { name: /about/i })).toBeInTheDocument();
-    await expect(canvas.getByRole('button', { name: /skills/i })).toBeInTheDocument();
-    await expect(canvas.getByRole('button', { name: /projects/i })).toBeInTheDocument();
-    await expect(canvas.getByRole('button', { name: /contact/i })).toBeInTheDocument();
-
-    // Verify theme toggle button exists (with dynamic aria-label)
-    const themeToggle = canvas.getByLabelText(/theme.*click to change theme/i);
-    await expect(themeToggle).toBeInTheDocument();
+    await expect(canvas.getByRole('banner')).toBeInTheDocument();
+    await expect(canvas.getByTestId('home-link')).toHaveAttribute('href', '/');
   },
 };
 
-export const ThemeMenuInteraction: Story = {
+export const ThemeMenuOpen: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    // Verify theme toggle button exists and is clickable (with dynamic aria-label)
-    const themeToggle = canvas.getByLabelText(/theme.*click to change theme/i);
-    await expect(themeToggle).toBeInTheDocument();
-    await expect(themeToggle).toBeEnabled();
-
-    // Click the button (menu appears in a portal, tested separately in Playwright)
-    await userEvent.click(themeToggle);
+    await userEvent.click(canvas.getByTestId('theme-button'));
+    const menu = within(document.body);
+    await expect(await menu.findByRole('menuitem', { name: 'Dark' })).toBeInTheDocument();
   },
 };
 
-export const LightMode: Story = {
-  parameters: {
-    backgrounds: { default: 'light' },
-  },
-};
-
-export const DarkMode: Story = {
-  parameters: {
-    backgrounds: { default: 'dark' },
-  },
+export const Mobile: Story = {
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
 };

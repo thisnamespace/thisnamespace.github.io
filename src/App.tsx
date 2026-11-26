@@ -3,7 +3,10 @@ import { CssBaseline, Box } from '@mui/material';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import ScrollManager from './components/ScrollManager';
 import Home from './pages/Home';
+import CaseStudy from './pages/CaseStudy';
+import NotFound from './pages/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
@@ -12,17 +15,14 @@ function App() {
       <ThemeProvider>
         <CssBaseline />
         <Router>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '100vh',
-            }}
-          >
+          <ScrollManager />
+          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
             <Box component="main" sx={{ flexGrow: 1 }}>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/work/:slug" element={<CaseStudy />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Box>
             <Footer />

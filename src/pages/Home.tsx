@@ -1,20 +1,30 @@
 import { Box } from '@mui/material';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import Skills from '../components/Skills';
-import Experience from '../components/Experience';
-import Projects from '../components/Projects';
+import Clients from '../components/Clients';
+import CaseStudyList from '../components/CaseStudyList';
+import Approach from '../components/Approach';
+import ExperienceTimeline from '../components/ExperienceTimeline';
 import Contact from '../components/Contact';
+import { approach, caseStudies, clients, contact, experience, profile } from '../data/content';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const Home = () => {
+  usePageTitle();
+
   return (
     <Box id="main-content">
       <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
+      <Clients title={clients.title} body={clients.body} names={clients.names} />
+      <CaseStudyList studies={caseStudies} />
+      <Approach title={approach.title} principles={approach.principles} />
+      <ExperienceTimeline entries={experience} linkedinUrl={profile.linkedin} />
+      <Contact
+        title={contact.title}
+        body={contact.body}
+        email={profile.email}
+        linkedinUrl={profile.linkedin}
+        githubUrl={profile.github}
+      />
     </Box>
   );
 };

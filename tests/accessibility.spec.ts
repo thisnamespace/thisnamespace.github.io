@@ -1,130 +1,76 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test.describe('Accessibility Tests', () => {
-  test('should not have any automatically detectable accessibility issues on home page', async ({
+const PAGES = [
+  { name: 'home page', path: '/' },
+  { name: 'case study page', path: '/work/ai-adoption' },
+  { name: 'not-found page', path: '/no-such-page' },
+];
+
+test.describe('Accessibility', () => {
+  for (const { name, path } of PAGES) {
+    for (const scheme of ['light', 'dark'] as const) {
+      test(`${name} has no detectable issues in ${scheme} mode`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
+        await page.goto(path);
+
+        const results = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
+          .analyze();
+
+        expect(results.violations).toEqual([]);
+      });
+    }
+  }
+
+  test('each page has exactly one h1', async ({ page }) => {
+    for (const { path } of PAGES) {
+      await page.goto(path);
+      await expect(page.locator('h1')).toHaveCount(1);
+    }
+  });
+
+  test('the skip link is the first focusable element and targets the main content', async ({
     page,
   }) => {
     await page.goto('/');
-
-    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
-  test('should have proper heading hierarchy', async ({ page }) => {
-    await page.goto('/');
-
-    // Check that there is exactly one h1
-    const h1Count = await page.locator('h1').count();
-    expect(h1Count).toBe(1);
-
-    // Check h1 content
-    const h1Text = await page.locator('h1').textContent();
-    expect(h1Text).toContain('Engineering Leader');
-
-    // Check that h2 elements exist for sections
-    const h2Count = await page.locator('h2').count();
-    expect(h2Count).toBeGreaterThan(0);
-  });
-
-  test('should have skip to main content link', async ({ page }) => {
-    await page.goto('/');
-
-    // Tab to focus the skip link
     await page.keyboard.press('Tab');
 
-    // Check if skip link is focused
-    const skipLink = page.locator('a[href="#main-content"]');
-    await expect(skipLink).toBeVisible();
-    await expect(skipLink).toHaveText('Skip to main content');
+    const skipLink = page.getByRole('link', { name: 'Skip to main content' });
+    await expect(skipLink).toBeFocused();
+    await expect(skipLink).toBeInViewport();
+    await expect(page.locator('#main-content')).toHaveCount(1);
   });
 
-  test('should have alt text for logo', async ({ page }) => {
+  test('a case study can be reached and opened with the keyboard alone', async ({ page }) => {
     await page.goto('/');
 
-    const logo = page.locator('img[alt="thisnamespace Logo"]').first();
-    await expect(logo).toHaveAttribute('alt', 'thisnamespace Logo');
+    await page.getByTestId('case-study-link-design-in-code').focus();
+    await page.keyboard.press('Enter');
+
+    await expect(page).toHaveURL(/\/work\/design-in-code$/);
   });
 
-  test('should have proper ARIA labels on interactive elements', async ({ page }) => {
+  test('the mobile menu opens, traps nothing, and closes with Escape', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
     await page.goto('/');
 
-    // Check theme toggle button
-    const themeToggle = page.locator('[aria-label*="toggle theme"]');
-    await expect(themeToggle).toBeVisible();
+    await page.getByTestId('menu-button').click();
+    const mobileNav = page.getByRole('navigation', { name: 'Main, mobile' });
+    await expect(mobileNav).toBeVisible();
 
-    // Check social media links in footer
-    const githubLink = page.locator('[aria-label*="GitHub"]').last();
-    await expect(githubLink).toBeVisible();
-
-    const linkedinLink = page.locator('[aria-label*="LinkedIn"]').last();
-    await expect(linkedinLink).toBeVisible();
-
-    const emailLink = page.locator('[aria-label*="email"]').last();
-    await expect(emailLink).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(mobileNav).toBeHidden();
   });
 
-  test('should have proper form labels', async ({ page }) => {
+  test('interactive targets in the header are at least 44px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
     await page.goto('/');
 
-    // Scroll to contact form
-    await page.locator('#contact').scrollIntoViewIfNeeded();
-
-    // Check that all form inputs have labels - use role-based selectors to avoid ambiguity
-    await expect(page.locator('#contact').getByRole('textbox', { name: 'Name' })).toBeVisible();
-    await expect(page.locator('#contact').getByRole('textbox', { name: 'Email' })).toBeVisible();
-    await expect(page.locator('#contact').getByRole('textbox', { name: 'Message' })).toBeVisible();
-  });
-
-  test('should maintain focus visibility when navigating with keyboard', async ({ page }) => {
-    await page.goto('/');
-
-    // Tab through several elements
-    await page.keyboard.press('Tab'); // Skip link
-    await page.keyboard.press('Tab'); // Logo/brand
-    await page.keyboard.press('Tab'); // First nav button
-
-    // Check that something is focused
-    const focused = await page.evaluate(() => document.activeElement?.tagName);
-    expect(focused).toBeTruthy();
-  });
-
-  test('should have lang attribute on html element', async ({ page }) => {
-    await page.goto('/');
-
-    const htmlLang = await page.locator('html').getAttribute('lang');
-    expect(htmlLang).toBe('en');
-  });
-
-  test('should have external links with rel="noopener noreferrer"', async ({ page }) => {
-    await page.goto('/');
-
-    // Check GitHub link
-    const githubLink = page.locator('a[href*="github.com"]').first();
-    const githubRel = await githubLink.getAttribute('rel');
-    expect(githubRel).toContain('noopener');
-    expect(githubRel).toContain('noreferrer');
-
-    // Check LinkedIn link
-    const linkedinLink = page.locator('a[href*="linkedin.com"]').first();
-    const linkedinRel = await linkedinLink.getAttribute('rel');
-    expect(linkedinRel).toContain('noopener');
-    expect(linkedinRel).toContain('noreferrer');
-  });
-
-  test('dark mode should not have accessibility issues', async ({ page }) => {
-    await page.goto('/');
-
-    // Toggle dark mode
-    await page.locator('[aria-label*="toggle theme"]').click();
-
-    // Wait for theme to change
-    await page.waitForTimeout(500);
-
-    // Run accessibility scan in dark mode
-    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
+    for (const id of ['theme-button', 'menu-button']) {
+      const box = await page.getByTestId(id).boundingBox();
+      expect(box?.width).toBeGreaterThanOrEqual(44);
+      expect(box?.height).toBeGreaterThanOrEqual(44);
+    }
   });
 });

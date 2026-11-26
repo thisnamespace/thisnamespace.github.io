@@ -1,202 +1,120 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
-test.describe('Navigation Tests', () => {
-  test('should navigate to sections when clicking header nav buttons', async ({ page }) => {
+/** Follows a main-nav link, going through the drawer on small screens. */
+const followNavLink = async (page: Page, name: string, isMobile: boolean) => {
+  if (isMobile) {
+    await page.getByTestId('menu-button').click();
+    await page
+      .getByRole('navigation', { name: 'Main, mobile' })
+      .getByRole('link', { name })
+      .click();
+  } else {
+    await page
+      .getByRole('navigation', { name: 'Main', exact: true })
+      .getByRole('link', { name })
+      .click();
+  }
+};
+
+test.describe('Navigation', () => {
+  test('main nav links scroll to their sections', async ({ page, isMobile }) => {
     await page.goto('/');
 
-    // Click About nav button
-    await page.locator('header').getByRole('button', { name: 'About', exact: true }).click();
-    await expect(page.locator('#about')).toBeInViewport();
+    for (const [name, id] of [
+      ['Work', '#work'],
+      ['Approach', '#approach'],
+      ['Experience', '#experience'],
+      ['Contact', '#contact'],
+    ]) {
+      await followNavLink(page, name, isMobile);
+      await expect(page.locator(id)).toBeInViewport();
+    }
+  });
 
-    // Click Skills nav button
-    await page.locator('header').getByRole('button', { name: 'Skills', exact: true }).click();
-    await expect(page.locator('#skills')).toBeInViewport();
+  test('a case study opens from the home page and links back to the work list', async ({
+    page,
+  }) => {
+    await page.goto('/');
 
-    // Click Projects nav button
-    await page.locator('header').getByRole('button', { name: 'Projects', exact: true }).click();
-    await expect(page.locator('#projects')).toBeInViewport();
+    await page.getByTestId('case-study-link-ai-adoption').click();
+    await expect(page).toHaveURL(/\/work\/ai-adoption$/);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Rolling out AI');
+    await expect(page).toHaveTitle(/Rolling out AI/);
 
-    // Click Contact nav button
-    await page.locator('header').getByRole('button', { name: 'Contact', exact: true }).click();
+    await page.getByRole('link', { name: 'All work' }).click();
+    await expect(page).toHaveURL(/\/#work$/);
+    await expect(page.locator('#work')).toBeInViewport();
+  });
+
+  test('case studies link to each other', async ({ page }) => {
+    await page.goto('/work/ai-adoption');
+
+    await page.getByTestId('next-case-study').click();
+    await expect(page).toHaveURL(/\/work\/design-in-code$/);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('design team');
+  });
+
+  test('nav links work from a case study page', async ({ page, isMobile }) => {
+    await page.goto('/work/agents-and-skills');
+
+    await followNavLink(page, 'Contact', isMobile);
+    await expect(page).toHaveURL(/\/#contact$/);
     await expect(page.locator('#contact')).toBeInViewport();
   });
 
-  test('should scroll smoothly when navigating between sections', async ({ page }) => {
-    await page.goto('/');
+  test('an unknown address shows the not-found page', async ({ page }) => {
+    await page.goto('/no-such-page');
 
-    // Get initial scroll position
-    const initialScroll = await page.evaluate(() => window.scrollY);
-    expect(initialScroll).toBe(0);
-
-    // Navigate to About section
-    await page.locator('header').getByRole('button', { name: 'About', exact: true }).click();
-
-    // Wait for scroll to complete
-    await page.waitForFunction(() => window.scrollY > 0);
-
-    // Check that page has scrolled
-    const aboutScroll = await page.evaluate(() => window.scrollY);
-    expect(aboutScroll).toBeGreaterThan(0);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('That page does not exist.');
+    await page.getByRole('link', { name: 'Go to the home page' }).click();
+    await expect(page).toHaveURL(/\/$/);
   });
 
-  test('should return to top when clicking logo', async ({ page }) => {
+  test('the theme can be changed and the choice is remembered', async ({ page }) => {
     await page.goto('/');
 
-    // Scroll down to About section
-    await page.locator('header').getByRole('button', { name: 'About', exact: true }).click();
+    await page.getByTestId('theme-button').click();
+    await page.getByRole('menuitem', { name: 'Dark' }).click();
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
 
-    // Wait for scroll to complete
-    await page.waitForFunction(() => window.scrollY > 0);
-
-    // Verify we've scrolled
-    let scrollPosition = await page.evaluate(() => window.scrollY);
-    expect(scrollPosition).toBeGreaterThan(0);
-
-    // Scroll to top manually (logo navigates to "/" not smooth scroll)
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    // Wait for scroll to top to complete
-    await page.waitForFunction(() => window.scrollY < 50);
-
-    // Verify we're back at top
-    scrollPosition = await page.evaluate(() => window.scrollY);
-    expect(scrollPosition).toBeLessThan(50);
-  });
-
-  test('should switch themes using theme menu', async ({ page }) => {
-    await page.goto('/');
-
-    // Open theme menu
-    await page.locator('[aria-label*="toggle theme"]').click();
-
-    // Wait for menu to be visible
-    await page.getByRole('menu').waitFor({ state: 'visible' });
-
-    // Click Dark mode option
-    await page.getByText('Dark').click();
-
-    // Wait for theme preference to be saved
-    await page.waitForFunction(() => localStorage.getItem('themePreference') === 'dark');
-
-    // Verify theme preference stored in localStorage
-    let storedPreference = await page.evaluate(() => localStorage.getItem('themePreference'));
-    expect(storedPreference).toBe('dark');
-
-    // Open theme menu again
-    await page.locator('[aria-label*="toggle theme"]').click();
-    await page.getByRole('menu').waitFor({ state: 'visible' });
-
-    // Click Light mode option
-    await page.getByText('Light').click();
-    await page.waitForFunction(() => localStorage.getItem('themePreference') === 'light');
-
-    // Verify theme preference stored
-    storedPreference = await page.evaluate(() => localStorage.getItem('themePreference'));
-    expect(storedPreference).toBe('light');
-
-    // Open theme menu and select System
-    await page.locator('[aria-label*="toggle theme"]').click();
-    await page.getByRole('menu').waitFor({ state: 'visible' });
-    await page.getByRole('menuitem', { name: 'System', exact: true }).click();
-    await page.waitForFunction(() => localStorage.getItem('themePreference') === 'system');
-
-    // Verify system preference is stored
-    storedPreference = await page.evaluate(() => localStorage.getItem('themePreference'));
-    expect(storedPreference).toBe('system');
-  });
-
-  test('should persist theme preference on page reload', async ({ page }) => {
-    await page.goto('/');
-
-    // Set to dark mode via menu
-    await page.locator('[aria-label*="toggle theme"]').click();
-    await page.getByRole('menu').waitFor({ state: 'visible' });
-    await page.getByText('Dark').click();
-    await page.waitForFunction(() => localStorage.getItem('themePreference') === 'dark');
-
-    // Verify preference stored in localStorage
-    let storedPreference = await page.evaluate(() => localStorage.getItem('themePreference'));
-    expect(storedPreference).toBe('dark');
-
-    // Reload page
     await page.reload();
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
 
-    // Verify preference persisted in localStorage after reload
-    storedPreference = await page.evaluate(() => localStorage.getItem('themePreference'));
-    expect(storedPreference).toBe('dark');
+    await page.getByTestId('theme-button').click();
+    await page.getByRole('menuitem', { name: 'Light' }).click();
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(241, 245, 243)');
   });
 
-  test('should open external links in new tab with proper attributes', async ({ page }) => {
+  test('contact links point at the right places', async ({ page }) => {
     await page.goto('/');
 
-    // Check GitHub link
-    const githubLink = page.locator('a[href*="github.com"]').first();
-    await expect(githubLink).toHaveAttribute('target', '_blank');
-    await expect(githubLink).toHaveAttribute('rel', /noopener/);
-    await expect(githubLink).toHaveAttribute('rel', /noreferrer/);
-
-    // Check LinkedIn link
-    const linkedinLink = page.locator('a[href*="linkedin.com"]').first();
-    await expect(linkedinLink).toHaveAttribute('target', '_blank');
-    await expect(linkedinLink).toHaveAttribute('rel', /noopener/);
-    await expect(linkedinLink).toHaveAttribute('rel', /noreferrer/);
+    await expect(page.getByTestId('contact-email')).toHaveAttribute(
+      'href',
+      'mailto:info@thisnamespace.com'
+    );
+    await expect(page.locator('#contact').getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
+      'href',
+      /linkedin\.com\/in\/michael-day/
+    );
   });
+});
 
-  test('should have working email link', async ({ page }) => {
-    await page.goto('/');
+test.describe('Responsive layout', () => {
+  for (const viewport of [
+    { name: 'phone', width: 360, height: 740 },
+    { name: 'tablet', width: 768, height: 1024 },
+    { name: 'desktop', width: 1440, height: 900 },
+  ]) {
+    test(`no horizontal scrolling on ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
 
-    const emailLink = page.locator('a[href^="mailto:"]').first();
-    await expect(emailLink).toHaveAttribute('href', 'mailto:info@thisnamespace.com');
-  });
-
-  test('should navigate using keyboard', async ({ page }) => {
-    await page.goto('/');
-
-    // Tab through navigation elements
-    await page.keyboard.press('Tab'); // Skip link
-    await page.keyboard.press('Tab'); // Logo
-    await page.keyboard.press('Tab'); // First nav button (Home)
-    await page.keyboard.press('Tab'); // About
-
-    // Press Enter on About button
-    await page.keyboard.press('Enter');
-
-    // Verify About section is in view
-    await expect(page.locator('#about')).toBeInViewport();
-  });
-
-  test('should have all sections present on page', async ({ page }) => {
-    await page.goto('/');
-
-    // Verify all main sections exist
-    await expect(page.locator('#main-content')).toBeVisible();
-    await expect(page.locator('#about')).toBeAttached();
-    await expect(page.locator('#skills')).toBeAttached();
-    await expect(page.locator('#projects')).toBeAttached();
-    await expect(page.locator('#contact')).toBeAttached();
-  });
-
-  test('should show mobile navigation on small screens', async ({ page }) => {
-    // Set viewport to mobile size
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
-
-    // Check that header is still visible
-    const header = page.locator('header');
-    await expect(header).toBeVisible();
-
-    // Check that mobile menu icon is visible
-    const menuButton = page.getByRole('button', { name: 'open navigation menu' });
-    await expect(menuButton).toBeVisible();
-
-    // Open mobile drawer
-    await menuButton.click();
-
-    // Wait for drawer to be visible (MUI Drawer component)
-    await page.locator('[role="presentation"]').waitFor({ state: 'visible' });
-
-    // Check that navigation is accessible in drawer
-    const aboutButton = page.getByRole('button', { name: 'About', exact: true });
-    await expect(aboutButton).toBeVisible();
-  });
+      for (const path of ['/', '/work/ai-adoption']) {
+        await page.goto(path);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+        );
+        expect(overflow, `${path} at ${viewport.width}px`).toBeLessThanOrEqual(0);
+      }
+    });
+  }
 });

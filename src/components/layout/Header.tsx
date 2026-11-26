@@ -1,99 +1,69 @@
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  Button,
   Box,
   Container,
-  IconButton,
   Drawer,
+  IconButton,
+  Link,
   List,
-  ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
-  useMediaQuery,
-  useTheme,
   Menu,
   MenuItem,
-  ListItemIcon,
+  Stack,
+  Toolbar,
+  Typography,
 } from '@mui/material';
 import {
   Brightness4,
   Brightness7,
   BrightnessAuto,
-  Menu as MenuIcon,
   Close,
-  MenuBook,
+  Menu as MenuIcon,
 } from '@mui/icons-material';
 import { useThemeContext } from '../../contexts/ThemeContext';
-import Logo from '../Logo';
-import { useState } from 'react';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { fonts } from '../../styles/theme';
+
+type ThemePreference = 'light' | 'dark' | 'system';
 
 interface NavItem {
   label: string;
-  path: string;
-  external?: boolean;
+  hash: string;
 }
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Work', hash: '#work' },
+  { label: 'Approach', hash: '#approach' },
+  { label: 'Experience', hash: '#experience' },
+  { label: 'Contact', hash: '#contact' },
+];
+
+const THEME_OPTIONS: { value: ThemePreference; label: string; icon: React.ReactNode }[] = [
+  { value: 'light', label: 'Light', icon: <Brightness7 fontSize="small" /> },
+  { value: 'dark', label: 'Dark', icon: <Brightness4 fontSize="small" /> },
+  { value: 'system', label: 'Match system', icon: <BrightnessAuto fontSize="small" /> },
+];
 
 const Header = () => {
   const { mode, themePreference, setThemePreference } = useThemeContext();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [themeMenuAnchor, setThemeMenuAnchor] = useState<null | HTMLElement>(null);
-  const prefersReducedMotion = useReducedMotion();
 
-  const navItems: NavItem[] = [
-    { label: 'Home', path: '/' },
-    { label: 'About', path: '#about' },
-    { label: 'Skills', path: '#skills' },
-    { label: 'Experience', path: '#experience' },
-    { label: 'Projects', path: '#projects' },
-    { label: 'Contact', path: '#contact' },
-    { label: 'Storybook', path: '/storybook', external: true },
-  ];
+  const themeIcon =
+    themePreference === 'system' ? (
+      <BrightnessAuto />
+    ) : mode === 'dark' ? (
+      <Brightness4 />
+    ) : (
+      <Brightness7 />
+    );
 
-  const handleNavClick = (path: string, external?: boolean) => {
-    if (external) {
-      window.open(path, '_blank', 'noopener,noreferrer');
-    } else if (path === '/') {
-      // Scroll to top for home
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    } else if (path.startsWith('#')) {
-      const element = document.querySelector(path);
-      element?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    }
-    setMobileMenuOpen(false);
-  };
-
-  const handleThemeMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setThemeMenuAnchor(event.currentTarget);
-  };
-
-  const handleThemeMenuClose = () => {
+  const handleThemeChange = (preference: ThemePreference) => {
+    setThemePreference(preference);
     setThemeMenuAnchor(null);
-  };
-
-  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
-    setThemePreference(newTheme);
-    handleThemeMenuClose();
-  };
-
-  const getThemeIcon = () => {
-    if (themePreference === 'system') {
-      return <BrightnessAuto />;
-    }
-    return mode === 'dark' ? <Brightness7 /> : <Brightness4 />;
-  };
-
-  const getThemeAriaLabel = () => {
-    if (themePreference === 'system') {
-      return 'Theme set to system preference. Click to change theme.';
-    }
-    return mode === 'dark'
-      ? 'Dark theme active. Click to change theme.'
-      : 'Light theme active. Click to change theme.';
   };
 
   return (
@@ -104,131 +74,127 @@ const Header = () => {
         sx={{
           position: 'absolute',
           left: '-9999px',
-          zIndex: 999999,
-          padding: '1rem',
-          backgroundColor: 'primary.main',
-          color: 'white',
+          zIndex: 2000,
+          p: 2,
+          bgcolor: 'primary.main',
+          color: 'primary.contrastText',
+          fontFamily: fonts.display,
           textDecoration: 'none',
-          '&:focus': {
-            left: '1rem',
-            top: '1rem',
-          },
+          '&:focus': { left: '1rem', top: '1rem' },
         }}
       >
         Skip to main content
       </Box>
-      <AppBar position="sticky" color="default" elevation={1}>
+
+      <AppBar position="sticky" component="header">
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ px: { xs: 2, sm: 0 } }}>
-            <Box
-              onClick={() => handleNavClick('/')}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: { xs: 1, sm: 2 },
-                textDecoration: 'none',
-                color: 'inherit',
-                mr: 'auto',
-                cursor: 'pointer',
-              }}
+          <Toolbar disableGutters sx={{ minHeight: { xs: 64, md: 72 }, gap: 2 }}>
+            <Link
+              component={RouterLink}
+              to="/"
+              underline="none"
+              color="inherit"
+              aria-label="thisnamespace, Michael Day: home"
+              data-testid="home-link"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1.25, mr: 'auto' }}
             >
-              <Logo
-                variant="icon"
-                transparent
-                width={isMobile ? 40 : 50}
-                height={isMobile ? 40 : 50}
-              />
               <Box
-                sx={{
-                  display: { xs: 'none', sm: 'flex' },
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                }}
+                component="svg"
+                viewBox="0 0 44 32"
+                aria-hidden
+                sx={{ width: 40, height: 29, flexShrink: 0, color: 'primary.main' }}
               >
+                <path
+                  d="M9 3H3v26h6M35 3h6v26h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <Box component="g" sx={{ fill: (theme) => theme.palette.secondary.main }}>
+                  <circle cx="14" cy="16" r="2.6" />
+                  <circle cx="22" cy="16" r="2.6" />
+                  <circle cx="30" cy="16" r="2.6" />
+                </Box>
+              </Box>
+              <Box>
                 <Typography
-                  variant="h6"
+                  component="span"
                   sx={{
+                    display: 'block',
+                    fontFamily: fonts.display,
                     fontWeight: 700,
-                    fontFamily: '"Courier New", monospace',
-                    letterSpacing: '0.5px',
-                    fontSize: { xs: '1rem', sm: '1.25rem' },
-                    lineHeight: 1.2,
+                    fontSize: '1.1rem',
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.01em',
                   }}
                 >
                   thisnamespace
                 </Typography>
                 <Typography
-                  variant="caption"
+                  component="span"
                   sx={{
-                    fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                    display: 'block',
+                    fontFamily: fonts.display,
+                    fontSize: '0.85rem',
                     color: 'text.secondary',
-                    fontWeight: 500,
-                    mt: -0.5,
                   }}
                 >
                   Michael Day
                 </Typography>
               </Box>
-            </Box>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              {isMobile ? (
-                <>
-                  <IconButton
-                    onClick={handleThemeMenuOpen}
-                    color="inherit"
-                    aria-label={getThemeAriaLabel()}
-                    sx={{ minWidth: 44, minHeight: 44 }}
-                  >
-                    {getThemeIcon()}
-                  </IconButton>
-                  <IconButton
-                    onClick={() => setMobileMenuOpen(true)}
-                    color="inherit"
-                    aria-label="Open navigation menu"
-                    sx={{ minWidth: 44, minHeight: 44 }}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                </>
-              ) : (
-                <>
-                  {navItems.map((item) =>
-                    item.external ? (
-                      <IconButton
-                        key={item.label}
-                        onClick={() => handleNavClick(item.path, item.external)}
-                        color="inherit"
-                        aria-label={`Open ${item.label} in new tab`}
-                        sx={{ minWidth: 44, minHeight: 44 }}
-                      >
-                        <MenuBook />
-                      </IconButton>
-                    ) : (
-                      <Button
-                        key={item.label}
-                        onClick={() => handleNavClick(item.path, item.external)}
-                        sx={{
-                          color: 'text.primary',
-                          fontSize: { xs: '0.75rem', md: '0.875rem' },
-                          px: { xs: 1, md: 2 },
-                        }}
-                        aria-label={`Navigate to ${item.label} section`}
-                      >
-                        {item.label}
-                      </Button>
-                    )
-                  )}
-                  <IconButton
-                    onClick={handleThemeMenuOpen}
-                    color="inherit"
-                    aria-label={getThemeAriaLabel()}
-                    sx={{ minWidth: 44, minHeight: 44 }}
-                  >
-                    {getThemeIcon()}
-                  </IconButton>
-                </>
-              )}
-            </Box>
+            </Link>
+
+            <Stack
+              component="nav"
+              aria-label="Main"
+              direction="row"
+              spacing={3.5}
+              sx={{ display: { xs: 'none', md: 'flex' } }}
+            >
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.hash}
+                  component={RouterLink}
+                  to={{ pathname: '/', hash: item.hash }}
+                  underline="none"
+                  color="text.primary"
+                  sx={{
+                    fontFamily: fonts.display,
+                    fontWeight: 550,
+                    fontSize: '1rem',
+                    py: 1.25,
+                    borderBottom: '2px solid transparent',
+                    '&:hover': { borderBottomColor: 'primary.main' },
+                  }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </Stack>
+
+            <IconButton
+              onClick={(event) => setThemeMenuAnchor(event.currentTarget)}
+              color="inherit"
+              aria-label={`Change theme. Current setting: ${themePreference}`}
+              aria-haspopup="menu"
+              aria-expanded={Boolean(themeMenuAnchor)}
+              data-testid="theme-button"
+              sx={{ width: 44, height: 44 }}
+            >
+              {themeIcon}
+            </IconButton>
+
+            <IconButton
+              onClick={() => setMobileMenuOpen(true)}
+              color="inherit"
+              aria-label="Open navigation menu"
+              data-testid="menu-button"
+              sx={{ display: { xs: 'inline-flex', md: 'none' }, width: 44, height: 44 }}
+            >
+              <MenuIcon />
+            </IconButton>
           </Toolbar>
         </Container>
       </AppBar>
@@ -236,75 +202,53 @@ const Header = () => {
       <Menu
         anchorEl={themeMenuAnchor}
         open={Boolean(themeMenuAnchor)}
-        onClose={handleThemeMenuClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        onClose={() => setThemeMenuAnchor(null)}
       >
-        <MenuItem onClick={() => handleThemeChange('light')} selected={themePreference === 'light'}>
-          <ListItemIcon>
-            <Brightness7 fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Light</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => handleThemeChange('dark')} selected={themePreference === 'dark'}>
-          <ListItemIcon>
-            <Brightness4 fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Dark</ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => handleThemeChange('system')}
-          selected={themePreference === 'system'}
-        >
-          <ListItemIcon>
-            <BrightnessAuto fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>System</ListItemText>
-        </MenuItem>
+        {THEME_OPTIONS.map((option) => (
+          <MenuItem
+            key={option.value}
+            selected={themePreference === option.value}
+            onClick={() => handleThemeChange(option.value)}
+          >
+            <ListItemIcon>{option.icon}</ListItemIcon>
+            <ListItemText>{option.label}</ListItemText>
+          </MenuItem>
+        ))}
       </Menu>
 
       <Drawer
         anchor="right"
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        PaperProps={{
-          sx: {
-            width: '80%',
-            maxWidth: 320,
-            bgcolor: 'background.default',
-          },
-        }}
+        slotProps={{ paper: { sx: { width: 'min(84vw, 320px)', bgcolor: 'background.default' } } }}
       >
-        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontFamily: '"Courier New", monospace', fontWeight: 700 }}>
-            thisnamespace
-          </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1.5 }}>
           <IconButton
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close navigation menu"
-            sx={{ minWidth: 44, minHeight: 44 }}
+            sx={{ width: 44, height: 44 }}
           >
             <Close />
           </IconButton>
         </Box>
-        <List>
-          {navItems.map((item) => (
-            <ListItem key={item.label} disablePadding>
-              <ListItemButton onClick={() => handleNavClick(item.path, item.external)}>
-                {item.external && (
-                  <ListItemIcon>
-                    <MenuBook />
-                  </ListItemIcon>
-                )}
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
+        <List component="nav" aria-label="Main, mobile" sx={{ px: 1 }}>
+          {NAV_ITEMS.map((item) => (
+            <ListItemButton
+              key={item.hash}
+              component={RouterLink}
+              to={{ pathname: '/', hash: item.hash }}
+              onClick={() => setMobileMenuOpen(false)}
+              sx={{ minHeight: 52, borderRadius: 1 }}
+            >
+              <ListItemText
+                primary={item.label}
+                slotProps={{
+                  primary: {
+                    sx: { fontFamily: fonts.display, fontSize: '1.35rem', fontWeight: 600 },
+                  },
+                }}
+              />
+            </ListItemButton>
           ))}
         </List>
       </Drawer>
