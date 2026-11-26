@@ -1,4 +1,13 @@
-import type { ExperienceEntry, Interest, LoopStage, Profile, TechPath } from '../types';
+import type {
+  BuiltItem,
+  ExperienceEntry,
+  Interest,
+  LoopStage,
+  Photo,
+  PlaceGroup,
+  Profile,
+  TechPath,
+} from '../types';
 
 /**
  * All site copy lives in this file.
@@ -178,6 +187,71 @@ export const journey = {
       ],
     },
   ] satisfies TechPath[],
+};
+
+export const built = {
+  title: 'Things I’ve built',
+  items: [
+    {
+      id: 'scrollobserver',
+      name: 'ScrollObserver',
+      body: 'A small React component that turns any container into an infinite scroll, or runs a function when part of the page comes into view. Open source under the MIT licence.',
+      links: [
+        {
+          label: 'ScrollObserver on npm',
+          href: 'https://www.npmjs.com/package/@thisnamespace/scrollobserver',
+        },
+        {
+          label: 'ScrollObserver on GitHub',
+          href: 'https://github.com/thisnamespace/ScrollObserver',
+        },
+      ],
+    },
+    {
+      id: 'humanise',
+      name: 'Humanise',
+      body: 'A skill that gets AI agents to write plainly and specifically, the way a person would. I use it on this site’s own copy and on its commit messages.',
+      links: [
+        {
+          label: 'Read the Humanise skill',
+          href: 'https://github.com/thisnamespace/thisnamespace.github.io/blob/claude/director-site/.claude/skills/humanise/SKILL.md',
+        },
+      ],
+    },
+  ] satisfies BuiltItem[],
+};
+
+export const away: { title: string; body: string; places: PlaceGroup[]; photo?: Photo } = {
+  title: 'Away from work',
+  body: 'I love to travel and I love rugby, and sometimes the two line up: I’ve been to every World Cup final South Africa has played in since 2011.',
+  places: [
+    { id: 'worked', label: 'Worked in', names: ['South Africa', 'United Kingdom', 'Australia'] },
+    { id: 'work-trips', label: 'Sent for work', names: ['Germany', 'Portugal', 'India'] },
+    {
+      id: 'travelled',
+      label: 'Travelled to',
+      names: [
+        'Mozambique',
+        'Malawi',
+        'Lesotho',
+        'Ireland',
+        'USA',
+        'Mexico',
+        'Spain',
+        'France',
+        'Austria',
+        'New Zealand',
+        'Denmark',
+        'Finland',
+        'Wales',
+        'Scotland',
+        'Italy',
+        'Japan',
+      ],
+    },
+  ],
+  // Add a portrait here when there is one: { src: '/michael.webp', alt: '...', width, height }.
+  photo: undefined,
 };
 
 export const experience: ExperienceEntry[] = [

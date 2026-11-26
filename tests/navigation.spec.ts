@@ -338,3 +338,35 @@ test.describe('Clean start', () => {
     });
   }
 });
+
+test.describe('Things I have built', () => {
+  test('lists both projects with links that open safely in a new tab', async ({ page }) => {
+    await page.goto('/');
+
+    const list = page.getByTestId('built-list');
+    await expect(list.getByRole('listitem')).toHaveCount(2);
+    await expect(list.getByRole('link', { name: 'ScrollObserver on npm' })).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/@thisnamespace/scrollobserver'
+    );
+    for (const link of await list.getByRole('link').all()) {
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    }
+  });
+});
+
+test.describe('Away from work', () => {
+  test('shows the rugby line and the three groups of places', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.locator('#away')).toContainText(
+      'every World Cup final South Africa has played in'
+    );
+    await expect(page.getByTestId('places-worked')).toContainText(
+      'South Africa, United Kingdom, Australia'
+    );
+    await expect(page.getByTestId('places-work-trips')).toContainText('Germany, Portugal, India');
+    await expect(page.getByTestId('places-travelled')).toContainText('Japan');
+  });
+});

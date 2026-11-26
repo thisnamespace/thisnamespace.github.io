@@ -40,6 +40,29 @@ export interface TechPath {
   steps: TechStep[];
 }
 
+/** Something Michael made, with links to it. */
+export interface BuiltItem {
+  id: string;
+  name: string;
+  body: string;
+  links: { label: string; href: string }[];
+}
+
+/** A group of places, such as countries worked in. */
+export interface PlaceGroup {
+  id: string;
+  label: string;
+  names: string[];
+}
+
+/** Optional portrait for the "away from work" section. */
+export interface Photo {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface ExperienceEntry {
   id: string;
   company: string;
