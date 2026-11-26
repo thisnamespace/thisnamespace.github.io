@@ -192,19 +192,19 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: 'on-premise-to-saas',
-    area: 'Platform, at 1E',
+    area: 'Platform, at 1E and TeamViewer',
     title: 'On-premise to SaaS, then one cohesive platform',
     summary:
-      'UI strategy and front-end delivery through 1E’s move from on-premise software to SaaS, then microservices consolidated into a single platform.',
+      'UI strategy and front-end delivery through 1E’s move from on-premise software to SaaS, then, at TeamViewer, microservices consolidated into a single platform.',
     overview: [
       'As Head of UI Engineering at 1E I led the UI strategy and front-end delivery while the product moved from on-premise installations to a fully SaaS platform shipped through CI/CD.',
       'I owned the architectural direction of the core UI systems and component libraries, and kept product, design and platform engineering pulling in the same direction while the ground moved under them.',
-      'Once it was SaaS, I took the platform from a spread of microservices and modules to one cohesive platform: a monolith on Postgres and Redis, so there is one system to build on, ship and run.',
+      'After 1E became part of TeamViewer, I took the platform from a spread of microservices and modules to one cohesive platform: a monolith on Postgres and Redis, so there is one system to build on, ship and run.',
     ],
     actions: [
       'Led UI strategy and front-end delivery through the transition.',
       'Owned the architecture of the core UI systems and component libraries.',
-      'Took the SaaS platform from microservices and modules to one cohesive monolith on Postgres and Redis.',
+      'At TeamViewer, took the SaaS platform from microservices and modules to one cohesive monolith on Postgres and Redis.',
       'Aligned product, design and platform engineering.',
       'Managed and mentored the front-end engineers doing the work.',
     ],
