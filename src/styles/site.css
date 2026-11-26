@@ -1,6 +1,6 @@
 /*
  * thisnamespace.com
- * One stylesheet, no CSS-in-JS. Petrol and amber come from the logo.
+ * One stylesheet, no CSS-in-JS. Bottle green and gold, on a warm off-white page.
  */
 
 /* ---------- Tokens ---------- */
@@ -8,20 +8,24 @@
 :root {
   color-scheme: light dark;
 
-  --paper: #f1f5f3;
-  --surface: #ffffff;
-  --ink: #0f2a30;
-  --ink-soft: #3f5a60;
-  --petrol: #0e5c6b;
-  --petrol-contrast: #ffffff;
-  --amber: #9a5a00;
-  --line: #c8d4d0;
+  --paper: #f5f3ec;
+  --surface: #fffdf8;
+  --ink: #10261f;
+  --ink-soft: #42564d;
+  --brand: #14503c;
+  --brand-contrast: #ffffff;
+  /* Gold marks what is live or clickable: buttons, measured numbers, link underlines, focus. */
+  --accent: #9a5a00;
+  --line: #d6d3c5;
 
-  /* The loop panel and contact band keep these in both themes. */
-  --panel: #0a3f4a;
+  /* The hero, loop panel and contact band keep these in both themes. */
+  --hero: #0f4a3a;
+  --hero-text: #f6f3ea;
+  --hero-soft: #dfe9e2;
+  --panel: #0a3529;
   --panel-text: #ffffff;
-  --panel-soft: #cfe6e8;
-  --panel-bracket: #6ccbd9;
+  --panel-soft: #cfe3d9;
+  --panel-bracket: #f2b24c;
   --panel-dot: #f2b24c;
 
   --font-display: 'Bricolage Grotesque Variable', 'Segoe UI', system-ui, sans-serif;
@@ -35,26 +39,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --paper: #0b1e23;
-    --surface: #11292f;
-    --ink: #e4eeeb;
-    --ink-soft: #a6bab6;
-    --petrol: #6ccbd9;
-    --petrol-contrast: #06242a;
-    --amber: #f2b24c;
-    --line: #27454c;
+    --paper: #0a1a15;
+    --surface: #10261f;
+    --ink: #e8efe9;
+    --ink-soft: #a9bbb1;
+    --brand: #8fd3b0;
+    --brand-contrast: #06231a;
+    --accent: #f2b24c;
+    --line: #26433a;
   }
 }
 
 :root[data-theme='dark'] {
-  --paper: #0b1e23;
-  --surface: #11292f;
-  --ink: #e4eeeb;
-  --ink-soft: #a6bab6;
-  --petrol: #6ccbd9;
-  --petrol-contrast: #06242a;
-  --amber: #f2b24c;
-  --line: #27454c;
+  --paper: #0a1a15;
+  --surface: #10261f;
+  --ink: #e8efe9;
+  --ink-soft: #a9bbb1;
+  --brand: #8fd3b0;
+  --brand-contrast: #06231a;
+  --accent: #f2b24c;
+  --line: #26433a;
 }
 
 /* ---------- Base ---------- */
@@ -120,8 +124,10 @@ h3 {
 }
 
 a {
-  color: var(--petrol);
-  text-underline-offset: 3px;
+  color: var(--brand);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 ul,
@@ -132,14 +138,14 @@ dl {
 }
 
 :focus-visible {
-  outline: 3px solid var(--amber);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
 ::selection {
-  background: var(--petrol);
-  color: var(--petrol-contrast);
+  background: var(--brand);
+  color: var(--brand-contrast);
 }
 
 .wrap {
@@ -192,8 +198,8 @@ dl {
   left: -9999px;
   z-index: 100;
   padding: 1rem;
-  background: var(--petrol);
-  color: var(--petrol-contrast);
+  background: var(--brand);
+  color: var(--brand-contrast);
   font-family: var(--font-display);
   text-decoration: none;
 }
@@ -222,17 +228,18 @@ dl {
 }
 
 .button--solid {
-  background: var(--petrol);
-  color: var(--petrol-contrast);
+  background: var(--brand);
+  color: var(--brand-contrast);
 }
 
 .button--outline {
-  border-color: var(--petrol);
-  color: var(--petrol);
+  border-color: var(--brand);
+  color: var(--brand);
   background: none;
 }
 
-.button--amber {
+.button--gold,
+.button--loop {
   background: var(--panel-dot);
   color: #1f1400;
 }
@@ -241,11 +248,6 @@ dl {
   border-color: rgb(255 255 255 / 60%);
   color: #fff;
   background: none;
-}
-
-.button--loop {
-  background: var(--panel-bracket);
-  color: var(--panel);
 }
 
 .icon {
@@ -301,11 +303,11 @@ dl {
   width: 2.5rem;
   height: 1.8rem;
   flex: none;
-  color: var(--petrol);
+  color: var(--brand);
 }
 
-.brand__dots {
-  fill: var(--amber);
+.brand__dot {
+  fill: var(--accent);
 }
 
 .brand__name {
@@ -338,7 +340,7 @@ dl {
 }
 
 .site-nav a:hover {
-  border-bottom-color: var(--petrol);
+  border-bottom-color: var(--brand);
 }
 
 @media (min-width: 56.25rem) {
@@ -386,7 +388,15 @@ dl {
 
 /* ---------- Hero ---------- */
 
+/* On the green bands the gold has to be the bright one, in both themes. */
+.hero,
+.contact {
+  --accent: var(--panel-dot);
+}
+
 .hero {
+  background: var(--hero);
+  color: var(--hero-text);
   padding-block: clamp(3rem, 8vw, 5rem) clamp(3.5rem, 9vw, 5.5rem);
 }
 
@@ -404,7 +414,7 @@ dl {
 
 .hero__name {
   margin-bottom: 1.1rem;
-  color: var(--petrol);
+  color: var(--panel-dot);
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 600;
@@ -414,6 +424,7 @@ dl {
 .hero__lead {
   margin-top: 1.75rem;
   max-width: 36em;
+  color: var(--hero-soft);
   font-size: clamp(1.125rem, 1.6vw, 1.25rem);
 }
 
@@ -574,7 +585,7 @@ dl {
   top: calc(0.5em + 22px);
   bottom: -2px;
   width: 2px;
-  background: rgb(108 203 217 / 45%);
+  background: rgb(207 227 217 / 35%);
 }
 
 .loop__stage.is-active::before {
@@ -647,7 +658,7 @@ dl {
 .loop__closing .icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: var(--panel-bracket);
+  color: var(--panel-soft);
 }
 
 .loop__closing.is-done .icon {
@@ -733,7 +744,7 @@ dl {
   top: 0;
   bottom: 0;
   width: 16px;
-  border: 3px solid var(--petrol);
+  border: 3px solid var(--brand);
 }
 
 .speed__grid::before {
@@ -762,6 +773,7 @@ dl {
 
 .speed dd {
   margin-top: 0.125rem;
+  color: var(--accent);
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3vw, 2rem);
   font-weight: 650;
@@ -789,7 +801,7 @@ dl {
 }
 
 .path__label {
-  color: var(--amber);
+  color: var(--accent);
   font-family: var(--font-display);
   font-size: 0.975rem;
   font-weight: 600;
@@ -831,7 +843,7 @@ dl {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--petrol);
+  background: var(--brand);
 }
 
 .path__name {
@@ -954,7 +966,7 @@ dl {
 }
 
 .places dt {
-  color: var(--amber);
+  color: var(--accent);
   font-size: 0.975rem;
   font-weight: 600;
   line-height: 1.6;
@@ -1018,8 +1030,8 @@ dl {
 
 .contact {
   padding-block: clamp(4rem, 9vw, 6rem);
-  background: var(--panel);
-  color: var(--panel-text);
+  background: var(--hero);
+  color: var(--hero-text);
 }
 
 .contact p {
@@ -1059,6 +1071,24 @@ dl {
   gap: 0.75rem 2rem;
 }
 
+/* Short bar, dot, long bar: the shape of "this.namespace". */
+.site-footer__sign {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-footer__mark {
+  width: 2.4rem;
+  height: 0.66rem;
+  flex: none;
+  fill: var(--brand);
+}
+
+.site-footer__mark circle {
+  fill: var(--accent);
+}
+
 .site-footer nav {
   display: flex;
   flex-wrap: wrap;
@@ -1077,10 +1107,12 @@ dl {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--petrol);
+  color: var(--brand);
   font: inherit;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
   cursor: pointer;
 }
 
@@ -1157,7 +1189,7 @@ kbd {
 .shortcuts__toggle input {
   width: 1.25rem;
   height: 1.25rem;
-  accent-color: var(--petrol);
+  accent-color: var(--brand);
 }
 
 /* ---------- Not found and error pages ---------- */

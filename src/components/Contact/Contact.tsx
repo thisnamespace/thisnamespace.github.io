@@ -14,7 +14,7 @@ const Contact = ({ title, body, email, linkedinUrl, githubUrl }: ContactProps) =
       <h2 id="contact-heading">{title}</h2>
       <p>{body}</p>
       <div className="contact__actions">
-        <a className="button button--amber" href={`mailto:${email}`} data-testid="contact-email">
+        <a className="button button--gold" href={`mailto:${email}`} data-testid="contact-email">
           <Icon name="mail" />
           {email}
         </a>

@@ -46,18 +46,14 @@ const Header = () => {
           <a className="brand" href="/" data-testid="home-link">
             <svg className="brand__mark" viewBox="0 0 44 32" aria-hidden="true" focusable="false">
               <path
-                d="M9 3H3v26h6M35 3h6v26h-6"
+                d="M13 3c-4 0-5 2-5 5v4c0 2.5-1.5 4-4 4 2.5 0 4 1.5 4 4v4c0 3 1 5 5 5M31 3c4 0 5 2 5 5v4c0 2.5 1.5 4 4 4-2.5 0-4 1.5-4 4v4c0 3-1 5-5 5"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="3.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <g className="brand__dots">
-                <circle cx="14" cy="16" r="2.6" />
-                <circle cx="22" cy="16" r="2.6" />
-                <circle cx="30" cy="16" r="2.6" />
-              </g>
+              <circle className="brand__dot" cx="22" cy="16" r="3.6" />
             </svg>
             <span>
               <span className="brand__name">thisnamespace</span>

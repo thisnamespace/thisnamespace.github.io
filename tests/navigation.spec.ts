@@ -71,15 +71,15 @@ test.describe('Navigation', () => {
 
     await button.click();
     await expect(button).toHaveAttribute('data-theme-setting', 'dark');
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(10, 26, 21)');
 
     await page.reload();
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(10, 26, 21)');
     await expect(button).toHaveAttribute('data-theme-setting', 'dark');
 
     await button.click();
     await expect(button).toHaveAttribute('data-theme-setting', 'system');
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(241, 245, 243)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(245, 243, 236)');
   });
 
   test('a saved dark theme is applied before the page paints', async ({ page }) => {
@@ -248,7 +248,7 @@ test.describe('Keyboard shortcuts', () => {
     // system -> light -> dark
     await page.keyboard.press('t');
     await page.keyboard.press('t');
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(10, 26, 21)');
   });
 
   test('? opens the list, and the shortcuts can be switched off', async ({ page }) => {

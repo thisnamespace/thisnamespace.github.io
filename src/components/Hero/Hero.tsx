@@ -12,10 +12,10 @@ const Hero = () => (
         <LivingHeadline id="hero-heading" text={profile.headline} pointerArea=".hero" />
         <p className="hero__lead">{profile.lead}</p>
         <div className="hero__actions">
-          <a className="button button--solid" href="#interests">
+          <a className="button button--gold" href="#interests">
             What I care about
           </a>
-          <a className="button button--outline" href="#contact">
+          <a className="button button--ghost" href="#contact">
             Get in touch
           </a>
         </div>

@@ -1,7 +1,7 @@
 {
-  "name": "Michael Day - Front End Engineering Manager",
+  "name": "Michael Day, engineering leader",
   "short_name": "Michael Day",
-  "description": "Engineering Leader with 16+ years building high-performing front end teams",
+  "description": "Fast, clear products. AI adopted on purpose.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -16,8 +16,8 @@
       "purpose": "any maskable"
     }
   ],
-  "theme_color": "#06b6d4",
-  "background_color": "#ffffff",
+  "theme_color": "#0f4a3a",
+  "background_color": "#f5f3ec",
   "display": "standalone",
   "orientation": "portrait-primary",
   "start_url": "/",
