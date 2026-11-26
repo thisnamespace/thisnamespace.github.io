@@ -1,5 +1,4 @@
-import { Box, Container, Typography } from '@mui/material';
-import { fonts } from '../../styles/theme';
+import type { CSSProperties } from 'react';
 
 export interface ClientsProps {
   title: string;
@@ -7,57 +6,31 @@ export interface ClientsProps {
   names: string[];
 }
 
-/** Background band: the consumer and enterprise products behind the experience. */
+/** The brands and employers behind the experience. */
 const Clients = ({ title, body, names }: ClientsProps) => (
-  <Box
-    component="section"
-    aria-labelledby="clients-heading"
-    sx={{ borderTop: 1, borderBottom: 1, borderColor: 'divider', py: { xs: 6, md: 8 } }}
-  >
-    <Container maxWidth="lg">
-      <Typography id="clients-heading" variant="h3" component="h2">
+  <section className="section section--ruled" aria-labelledby="clients-heading">
+    <div className="wrap">
+      <h2
+        id="clients-heading"
+        className="reveal"
+        style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.6rem)' }}
+      >
         {title}
-      </Typography>
-      <Typography sx={{ mt: 1.5, maxWidth: '40em', fontSize: '1.0625rem' }} color="text.secondary">
-        {body}
-      </Typography>
-      <Box
-        component="ul"
+      </h2>
+      <p className="lede reveal">{body}</p>
+      <ul
+        className="brands__list reveal-list"
         aria-label="Companies and brands I have worked with"
         data-testid="brand-list"
-        sx={{
-          listStyle: 'none',
-          m: 0,
-          mt: { xs: 3.5, md: 4.5 },
-          p: 0,
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: 'repeat(2, minmax(0, 1fr))',
-            sm: 'repeat(3, minmax(0, 1fr))',
-            md: 'repeat(5, minmax(0, 1fr))',
-          },
-          columnGap: 3,
-          rowGap: { xs: 2, md: 3 },
-        }}
       >
-        {names.map((name) => (
-          <Typography
-            component="li"
-            key={name}
-            sx={{
-              fontFamily: fonts.display,
-              fontWeight: 620,
-              fontSize: { xs: '1.15rem', md: '1.35rem' },
-              letterSpacing: '-0.015em',
-              lineHeight: 1.25,
-            }}
-          >
+        {names.map((name, index) => (
+          <li key={name} style={{ '--i': index % 5 } as CSSProperties}>
             {name}
-          </Typography>
+          </li>
         ))}
-      </Box>
-    </Container>
-  </Box>
+      </ul>
+    </div>
+  </section>
 );
 
 export default Clients;

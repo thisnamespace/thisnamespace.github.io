@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
-import { MemoryRouter } from 'react-router-dom';
 import Hero from './Hero';
 import { profile } from '../../data/content';
 
@@ -9,13 +8,6 @@ const meta = {
   component: Hero,
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 } satisfies Meta<typeof Hero>;
 
 export default meta;
@@ -27,7 +19,7 @@ export const Default: Story = {
     await expect(canvas.getByRole('heading', { level: 1 })).toHaveTextContent(profile.headline);
     await expect(canvas.getByRole('link', { name: 'Get in touch' })).toHaveAttribute(
       'href',
-      '/#contact'
+      '#contact'
     );
   },
 };

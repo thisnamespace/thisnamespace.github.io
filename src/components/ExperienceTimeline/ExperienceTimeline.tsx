@@ -1,4 +1,3 @@
-import { Box, Container, Link, Typography } from '@mui/material';
 import type { ExperienceEntry } from '../../types';
 
 export interface ExperienceTimelineProps {
@@ -7,65 +6,39 @@ export interface ExperienceTimelineProps {
 }
 
 const ExperienceTimeline = ({ entries, linkedinUrl }: ExperienceTimelineProps) => (
-  <Box
-    component="section"
+  <section
     id="experience"
+    className="section section--surface"
     aria-labelledby="experience-heading"
-    sx={{
-      bgcolor: 'background.paper',
-      borderTop: 1,
-      borderColor: 'divider',
-      py: { xs: 7, md: 11 },
-    }}
   >
-    <Container maxWidth="lg">
-      <Typography id="experience-heading" variant="h2">
+    <div className="wrap">
+      <h2 id="experience-heading" className="reveal">
         Experience
-      </Typography>
+      </h2>
 
-      <Box component="ol" reversed sx={{ listStyle: 'none', m: 0, p: 0, mt: { xs: 3, md: 5 } }}>
+      <ol className="timeline" reversed>
         {entries.map((entry) => (
-          <Box
-            component="li"
-            key={entry.id}
-            data-testid="experience-entry"
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 3fr) minmax(0, 9fr)' },
-              columnGap: 5,
-              rowGap: 0.5,
-              py: { xs: 2.5, md: 3 },
-              borderTop: 1,
-              borderColor: 'divider',
-            }}
-          >
-            <Typography variant="body2" color="text.secondary" sx={{ pt: { md: 0.5 } }}>
-              {entry.period}
-            </Typography>
-            <Box>
-              <Typography variant="h4" component="h3">
+          <li className="timeline__entry reveal" key={entry.id} data-testid="experience-entry">
+            <p className="timeline__period">{entry.period}</p>
+            <div>
+              <h3>
                 {entry.title}, {entry.company}
-              </Typography>
-              <Typography
-                sx={{ mt: 0.5, fontSize: '1.0625rem', maxWidth: '38em' }}
-                color="text.secondary"
-              >
-                {entry.note}
-              </Typography>
-            </Box>
-          </Box>
+              </h3>
+              <p>{entry.note}</p>
+            </div>
+          </li>
         ))}
-      </Box>
+      </ol>
 
-      <Typography variant="body2" sx={{ mt: 3 }}>
+      <p className="timeline__more">
         The full history is on{' '}
-        <Link href={linkedinUrl} target="_blank" rel="noopener noreferrer">
+        <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
           LinkedIn
-        </Link>
+        </a>
         .
-      </Typography>
-    </Container>
-  </Box>
+      </p>
+    </div>
+  </section>
 );
 
 export default ExperienceTimeline;

@@ -33,6 +33,8 @@ test.describe('Accessibility', () => {
     page,
   }) => {
     await page.goto('/');
+    // Headless runs can leave the page unfocused when many tests start at once.
+    await page.bringToFront();
     await page.keyboard.press('Tab');
 
     const skipLink = page.getByRole('link', { name: 'Skip to main content' });

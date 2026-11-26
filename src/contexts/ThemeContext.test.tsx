@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider, useThemeContext } from './ThemeContext';
-import { Button } from '@mui/material';
 
 // Test component that uses the theme context
 const TestComponent = () => {
@@ -12,9 +11,15 @@ const TestComponent = () => {
     <div>
       <div data-testid="mode">{mode}</div>
       <div data-testid="preference">{themePreference}</div>
-      <Button onClick={() => setThemePreference('light')}>Set Light</Button>
-      <Button onClick={() => setThemePreference('dark')}>Set Dark</Button>
-      <Button onClick={() => setThemePreference('system')}>Set System</Button>
+      <button type="button" onClick={() => setThemePreference('light')}>
+        Set Light
+      </button>
+      <button type="button" onClick={() => setThemePreference('dark')}>
+        Set Dark
+      </button>
+      <button type="button" onClick={() => setThemePreference('system')}>
+        Set System
+      </button>
     </div>
   );
 };

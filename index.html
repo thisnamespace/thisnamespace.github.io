@@ -1,9 +1,17 @@
 <!doctype html>
 <html lang="en">
-  <!-- Hello, fellow inspector. Built with React, TypeScript and MUI; tested with Playwright. Press ? on the page. -->
+  <!-- Hello, fellow inspector. Built with React, TypeScript and hand-written CSS; tested with Playwright. Press ? on the page. -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Apply a saved theme before the first paint, so there is no flash of the wrong one.
+      try {
+        var t = localStorage.getItem('themePreference');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -131,17 +139,9 @@
       }
     </script>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RB576VB02S"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RB576VB02S');
-    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>

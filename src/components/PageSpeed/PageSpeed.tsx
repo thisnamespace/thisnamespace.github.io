@@ -1,6 +1,4 @@
-import { Box, Container, Typography } from '@mui/material';
 import type { PageMetrics } from '../../hooks/usePageMetrics';
-import { fonts } from '../../styles/theme';
 
 export interface PageSpeedLabels {
   load: string;
@@ -24,24 +22,9 @@ const formatSeconds = (ms: number): string => `${(ms / 1000).toFixed(ms < 10_000
 const formatBytes = (bytes: number): string =>
   bytes >= 1_000_000 ? `${(bytes / 1_000_000).toFixed(1)} MB` : `${Math.round(bytes / 1000)} kB`;
 
-const bracket = (side: 'left' | 'right') => ({
-  content: '""',
-  position: 'absolute' as const,
-  top: 0,
-  bottom: 0,
-  [side]: 0,
-  width: 16,
-  border: '3px solid',
-  borderColor: 'primary.main',
-  [side === 'left' ? 'borderRight' : 'borderLeft']: 'none',
-  borderRadius: side === 'left' ? '4px 0 0 4px' : '0 4px 4px 0',
-  pointerEvents: 'none' as const,
-});
-
 /** Live performance numbers for this visit, shown between the site's square brackets. */
 const PageSpeed = ({ title, note, labels, unavailable, cached, metrics }: PageSpeedProps) => {
-  const pending = '…';
-  const missing = metrics.settled ? unavailable : pending;
+  const missing = metrics.settled ? unavailable : '…';
 
   const rows: { id: string; label: string; value: string; known: boolean }[] = [
     {
@@ -76,69 +59,27 @@ const PageSpeed = ({ title, note, labels, unavailable, cached, metrics }: PageSp
   ];
 
   return (
-    <Box
-      component="section"
-      id="speed"
-      aria-labelledby="speed-heading"
-      sx={{ borderBottom: 1, borderColor: 'divider', py: { xs: 6, md: 8 } }}
-    >
-      <Container maxWidth="lg">
-        <Typography id="speed-heading" variant="h3" component="h2">
+    <section id="speed" className="speed section--ruled" aria-labelledby="speed-heading">
+      <div className="wrap">
+        <h2
+          id="speed-heading"
+          className="reveal"
+          style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.6rem)' }}
+        >
           {title}
-        </Typography>
-        <Typography
-          sx={{ mt: 1.5, maxWidth: '40em', fontSize: '1.0625rem' }}
-          color="text.secondary"
-        >
-          {note}
-        </Typography>
+        </h2>
+        <p className="lede reveal">{note}</p>
 
-        <Box
-          component="dl"
-          data-testid="page-speed"
-          sx={{
-            position: 'relative',
-            m: 0,
-            mt: { xs: 3.5, md: 4.5 },
-            px: { xs: 4, md: 5 },
-            py: { xs: 2.5, md: 3 },
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(2, minmax(0, 1fr))',
-              md: 'repeat(4, minmax(0, 1fr))',
-            },
-            columnGap: 3,
-            rowGap: 3,
-            '&::before': bracket('left'),
-            '&::after': bracket('right'),
-          }}
-        >
+        <dl className="speed__grid reveal" data-testid="page-speed">
           {rows.map((row) => (
-            <Box key={row.id} data-testid={`metric-${row.id}`}>
-              <Typography component="dt" variant="body2" color="text.secondary">
-                {row.label}
-              </Typography>
-              <Typography
-                component="dd"
-                sx={{
-                  m: 0,
-                  mt: 0.25,
-                  fontFamily: fonts.display,
-                  fontWeight: 650,
-                  fontSize: row.known ? { xs: '1.6rem', md: '2rem' } : '1rem',
-                  lineHeight: row.known ? 1.15 : 1.5,
-                  letterSpacing: row.known ? '-0.02em' : 0,
-                  fontVariantNumeric: 'tabular-nums',
-                  color: row.known ? 'text.primary' : 'text.secondary',
-                }}
-              >
-                {row.value}
-              </Typography>
-            </Box>
+            <div key={row.id} data-testid={`metric-${row.id}`}>
+              <dt>{row.label}</dt>
+              <dd className={row.known ? undefined : 'is-unknown'}>{row.value}</dd>
+            </div>
           ))}
-        </Box>
-      </Container>
-    </Box>
+        </dl>
+      </div>
+    </section>
   );
 };
 

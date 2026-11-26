@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
-import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
 
 const meta = {
@@ -8,13 +7,6 @@ const meta = {
   component: Header,
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 } satisfies Meta<typeof Header>;
 
 export default meta;
@@ -28,12 +20,13 @@ export const Default: Story = {
   },
 };
 
-export const ThemeMenuOpen: Story = {
+/** Each press moves to the next theme setting: light, dark, then match system. */
+export const ThemeCycle: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByTestId('theme-button'));
-    const menu = within(document.body);
-    await expect(await menu.findByRole('menuitem', { name: 'Dark' })).toBeInTheDocument();
+    const button = within(canvasElement).getByTestId('theme-button');
+    const before = button.getAttribute('data-theme-setting');
+    await userEvent.click(button);
+    await expect(button).not.toHaveAttribute('data-theme-setting', before ?? '');
   },
 };
 

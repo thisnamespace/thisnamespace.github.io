@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
-import { MemoryRouter } from 'react-router-dom';
 import Shortcuts from './Shortcuts';
 import { shortcuts } from '../../data/content';
 
@@ -12,10 +11,10 @@ const meta = {
   args: { title: shortcuts.title, toggleLabel: shortcuts.toggleLabel, keys: shortcuts.keys },
   decorators: [
     (Story) => (
-      <MemoryRouter>
+      <>
         <p>Press ? to open the list of shortcuts.</p>
         <Story />
-      </MemoryRouter>
+      </>
     ),
   ],
 } satisfies Meta<typeof Shortcuts>;

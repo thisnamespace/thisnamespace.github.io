@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && bun scripts/prerender.mjs",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 5",
     "lint:fix": "eslint . --ext ts,tsx --fix",
@@ -30,7 +30,7 @@
     "commit": "cz",
     "optimize-images": "node scripts/optimize-images.js",
     "generate-favicons": "node scripts/generate-favicons.js",
-    "start": "serve -s dist -l tcp://0.0.0.0:${PORT:-3000}",
+    "start": "serve dist -l tcp://0.0.0.0:${PORT:-3000}",
     "test:e2e": "playwright test"
   },
   "config": {
@@ -48,17 +48,11 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.1",
-    "@mui/icons-material": "^7",
-    "@mui/material": "^7",
-    "@mui/system": "^7",
     "esbuild": "^0.27.1",
     "react": "^19",
     "react-dom": "^19",
-    "react-router-dom": "^7",
     "serve": "14"
   },
   "devDependencies": {

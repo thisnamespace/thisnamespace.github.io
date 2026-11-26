@@ -28,11 +28,8 @@ const supports = (type: string): boolean =>
  * Values the browser does not report stay undefined.
  */
 export const usePageMetrics = (): PageMetrics => {
-  const [metrics, setMetrics] = useState<PageMetrics>(() => ({
-    settled: false,
-    // Chromium reports zero shift by sending no entries, so start from a known zero.
-    layoutShift: supports('layout-shift') ? 0 : undefined,
-  }));
+  // Starts empty so the first render matches the pre-built HTML, which has no numbers yet.
+  const [metrics, setMetrics] = useState<PageMetrics>({ settled: false });
 
   useEffect(() => {
     if (typeof performance === 'undefined') {
@@ -54,6 +51,8 @@ export const usePageMetrics = (): PageMetrics => {
         ...current,
         loadMs: navigation && navigation.loadEventEnd > 0 ? navigation.loadEventEnd : undefined,
         transferBytes,
+        // Chromium reports "no shift" by sending no entries, so absence means zero there.
+        layoutShift: current.layoutShift ?? (supports('layout-shift') ? 0 : undefined),
       }));
     };
 

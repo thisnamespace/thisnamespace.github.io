@@ -1,49 +1,32 @@
-import { Box, Container, Link, Stack, Typography } from '@mui/material';
-import { OPEN_SHORTCUTS_EVENT } from '../Shortcuts';
 import { profile } from '../../data/content';
+import { OPEN_SHORTCUTS_EVENT } from '../Shortcuts';
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
-  return (
-    <Box
-      component="footer"
-      sx={{ borderTop: 1, borderColor: 'divider', py: { xs: 3, md: 4 }, mt: 'auto' }}
-    >
-      <Container maxWidth="lg">
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={{ xs: 1.5, sm: 4 }}
-          sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}
+const Footer = () => (
+  <footer className="site-footer">
+    <div className="wrap site-footer__bar">
+      {/* The year is fixed at build time, so the pre-built HTML and the browser agree. */}
+      <p className="soft">
+        © {__BUILD_YEAR__} {profile.name}
+      </p>
+      <nav aria-label="Elsewhere">
+        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        <a href={profile.github} target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        <a href={`mailto:${profile.email}`}>Email</a>
+        <button
+          type="button"
+          className="link-button shortcuts-link"
+          data-testid="open-shortcuts"
+          onClick={() => window.dispatchEvent(new Event(OPEN_SHORTCUTS_EVENT))}
         >
-          <Typography variant="body2" color="text.secondary">
-            © {currentYear} {profile.name}
-          </Typography>
-          <Stack direction="row" spacing={3} component="nav" aria-label="Elsewhere">
-            <Link href={profile.linkedin} target="_blank" rel="noopener noreferrer" variant="body2">
-              LinkedIn
-            </Link>
-            <Link href={profile.github} target="_blank" rel="noopener noreferrer" variant="body2">
-              GitHub
-            </Link>
-            <Link href={`mailto:${profile.email}`} variant="body2">
-              Email
-            </Link>
-            <Link
-              component="button"
-              type="button"
-              variant="body2"
-              data-testid="open-shortcuts"
-              onClick={() => window.dispatchEvent(new Event(OPEN_SHORTCUTS_EVENT))}
-              sx={{ display: { xs: 'none', md: 'inline' } }}
-            >
-              Keyboard shortcuts
-            </Link>
-          </Stack>
-        </Stack>
-      </Container>
-    </Box>
-  );
-};
+          Keyboard shortcuts
+        </button>
+      </nav>
+    </div>
+  </footer>
+);
 
 export default Footer;

@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import Hero from '../components/Hero';
 import Clients from '../components/Clients';
 import Interests from '../components/Interests';
@@ -16,14 +15,12 @@ import {
   profile,
 } from '../data/content';
 import { usePageMetrics } from '../hooks/usePageMetrics';
-import { usePageTitle } from '../hooks/usePageTitle';
 
 const Home = () => {
-  usePageTitle();
   const metrics = usePageMetrics();
 
   return (
-    <Box id="main-content">
+    <>
       <Hero />
       <Clients title={clients.title} body={clients.body} names={clients.names} />
       <Interests title={interests.title} items={interests.items} />
@@ -44,7 +41,7 @@ const Home = () => {
         linkedinUrl={profile.linkedin}
         githubUrl={profile.github}
       />
-    </Box>
+    </>
   );
 };
 

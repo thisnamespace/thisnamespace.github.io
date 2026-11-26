@@ -11,6 +11,10 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react()],
+  define: {
+    // Fixed at build time so the pre-built HTML and the browser render the same year.
+    __BUILD_YEAR__: new Date().getFullYear(),
+  },
   test: {
     globals: true,
     environment: 'jsdom',

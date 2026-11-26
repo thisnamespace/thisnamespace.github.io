@@ -1,6 +1,4 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Box, Container, Typography, Button } from '@mui/material';
-import { ErrorOutline } from '@mui/icons-material';
 
 interface Props {
   children: ReactNode;
@@ -37,51 +35,14 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <Box
-          sx={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: 'background.default',
-          }}
-        >
-          <Container maxWidth="sm">
-            <Box sx={{ textAlign: 'center' }}>
-              <ErrorOutline
-                sx={{
-                  fontSize: 80,
-                  color: 'error.main',
-                  mb: 2,
-                }}
-              />
-              <Typography variant="h4" gutterBottom>
-                Oops! Something went wrong
-              </Typography>
-              <Typography variant="body1" color="text.secondary" paragraph>
-                We encountered an unexpected error. Please try refreshing the page.
-              </Typography>
-              {process.env.NODE_ENV === 'development' && this.state.error && (
-                <Box
-                  sx={{
-                    mt: 3,
-                    p: 2,
-                    bgcolor: 'error.light',
-                    borderRadius: 1,
-                    textAlign: 'left',
-                  }}
-                >
-                  <Typography variant="caption" component="pre" sx={{ color: 'error.dark' }}>
-                    {this.state.error.toString()}
-                  </Typography>
-                </Box>
-              )}
-              <Button variant="contained" onClick={this.handleReset} sx={{ mt: 3 }}>
-                Try Again
-              </Button>
-            </Box>
-          </Container>
-        </Box>
+        <main className="wrap plain-page">
+          <h1>Oops! Something went wrong</h1>
+          <p>We encountered an unexpected error. Please try refreshing the page.</p>
+          {import.meta.env.DEV && this.state.error && <pre>{this.state.error.toString()}</pre>}
+          <button type="button" className="button button--solid" onClick={this.handleReset}>
+            Try Again
+          </button>
+        </main>
       );
     }
 

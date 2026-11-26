@@ -58,19 +58,35 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL(/\/$/);
   });
 
-  test('the theme can be changed and the choice is remembered', async ({ page }) => {
+  test('the theme button moves through the settings and the choice is remembered', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/');
+    const button = page.getByTestId('theme-button');
+    await expect(button).toHaveAttribute('data-theme-setting', 'system');
 
-    await page.getByTestId('theme-button').click();
-    await page.getByRole('menuitem', { name: 'Dark' }).click();
+    await button.click();
+    await expect(button).toHaveAttribute('data-theme-setting', 'light');
+
+    await button.click();
+    await expect(button).toHaveAttribute('data-theme-setting', 'dark');
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
 
     await page.reload();
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(11, 30, 35)');
+    await expect(button).toHaveAttribute('data-theme-setting', 'dark');
 
-    await page.getByTestId('theme-button').click();
-    await page.getByRole('menuitem', { name: 'Light' }).click();
+    await button.click();
+    await expect(button).toHaveAttribute('data-theme-setting', 'system');
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(241, 245, 243)');
+  });
+
+  test('a saved dark theme is applied before the page paints', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('themePreference', 'dark'));
+    await page.goto('/', { waitUntil: 'commit' });
+
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   });
 
   test('contact links point at the right places', async ({ page }) => {
@@ -256,4 +272,69 @@ test.describe('Keyboard shortcuts', () => {
     await page.keyboard.press('2');
     await expect(page).not.toHaveURL(/#journey$/);
   });
+});
+
+test.describe('Pre-built HTML', () => {
+  test('the page is readable with JavaScript switched off', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+    const page = await context.newPage();
+    const response = await page.goto('/');
+    const html = (await response?.text()) ?? '';
+    test.skip(!html.includes('data-page="home"'), 'Only the production build is pre-built.');
+
+    await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+      'Fast, clear products. AI adopted on purpose.'
+    );
+    await expect(page.getByTestId('interest-list').getByRole('listitem')).toHaveCount(6);
+    await expect(page.getByTestId('brand-list').getByRole('listitem')).toHaveCount(10);
+    await context.close();
+  });
+
+  test('a missing page answers with a 404 status and the not-found page', async ({ page }) => {
+    const response = await page.goto('/no-such-page');
+    const html = (await response?.text()) ?? '';
+    test.skip(!html.includes('data-page="not-found"'), 'Only the production build is pre-built.');
+
+    expect(response?.status()).toBe(404);
+    await expect(page).toHaveTitle('Page not found | Michael Day');
+  });
+});
+
+test.describe('Living headline', () => {
+  test('locks each letter width so nothing moves, then comes alive', async ({ page }) => {
+    await page.goto('/');
+
+    const heading = page.getByRole('heading', { level: 1 });
+    await expect(heading).toHaveClass(/is-live/);
+    const unlocked = await heading.locator('.headline__letter:not([style*="width"])').count();
+    expect(unlocked).toBe(0);
+  });
+
+  test('stays still when reduced motion is requested', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+
+    await expect(page.getByTestId('loop-run')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).not.toHaveClass(/is-live/);
+  });
+});
+
+test.describe('Clean start', () => {
+  for (const path of ['/', '/no-such-page']) {
+    test(`${path} loads without script errors or hydration warnings`, async ({ page }) => {
+      const problems: string[] = [];
+      page.on('pageerror', (error) => problems.push(error.message));
+      page.on('console', (message) => {
+        // A 404 for the missing page itself is expected and is not a script problem.
+        if (message.type() === 'error' && !message.text().includes('404')) {
+          problems.push(message.text());
+        }
+      });
+
+      await page.goto(path);
+      await expect(page.locator('body')).toHaveAttribute('data-shortcuts', 'on');
+
+      expect(problems).toEqual([]);
+    });
+  }
 });

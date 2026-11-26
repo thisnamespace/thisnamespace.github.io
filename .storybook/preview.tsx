@@ -1,8 +1,9 @@
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '../src/contexts/ThemeContext';
-import CssBaseline from '@mui/material/CssBaseline';
 import { withTheme } from './withTheme';
-import '../src/index.css';
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/source-serif-4';
+import '../src/styles/site.css';
 
 const preview: Preview = {
   parameters: {
@@ -29,7 +30,6 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ThemeProvider>
-        <CssBaseline />
         <div style={{ minHeight: '100vh' }}>
           <Story />
         </div>
