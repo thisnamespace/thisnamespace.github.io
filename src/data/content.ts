@@ -16,7 +16,7 @@ export const profile: Profile = {
   github: 'https://github.com/thisnamespace',
   siteUrl: 'https://thisnamespace.com',
   headline: 'Fast, clear products. AI adopted on purpose.',
-  lead: 'I lead software teams, and I care most about the front end: great user experiences and performance, on web and mobile. Lately I am just as absorbed by how AI should fit into the way teams design, build and ship.',
+  lead: 'I lead software teams, and I care most about the front end: great user experiences and performance, on web and mobile. Lately I’m just as absorbed by how AI should fit into the way teams design, build and ship.',
 };
 
 export const loopIntro = {
@@ -50,7 +50,7 @@ export const loopStages: LoopStage[] = [
     id: 'measure',
     name: 'Measure',
     change: 'Cost against what was delivered, and what reached customers.',
-    detail: 'If it has not reached a customer, it has not paid off yet.',
+    detail: 'If it hasn’t reached a customer, it hasn’t paid off yet.',
   },
 ];
 
@@ -81,8 +81,8 @@ export const shortcuts = {
 };
 
 export const clients = {
-  title: 'Brands I have worked with',
-  body: 'I started as a developer in 2008 and spent my early career building for consumer brands people use every day. Since then I have led teams at 1E and now TeamViewer.',
+  title: 'Brands I’ve worked with',
+  body: 'I started as a developer in 2008 and spent my early career building for consumer brands people use every day. Since then I’ve led teams at 1E and now TeamViewer.',
   names: [
     'TeamViewer',
     '1E',
@@ -103,17 +103,17 @@ export const interests = {
     {
       id: 'experience',
       title: 'Great user experiences',
-      body: 'To the person using it, the interface is the product. I love the clarity, accessibility and small details that make something feel right.',
+      body: 'To the person using it, the interface is the product. I care about the details people only notice when they’re wrong: focus order, contrast, spacing.',
     },
     {
       id: 'performance',
       title: 'Performance',
-      body: 'People feel a fast product before they notice anything else about it. I treat speed as a requirement, not something to polish at the end.',
+      body: 'People feel a fast product before they notice anything else about it. I treat speed as a requirement from the start.',
     },
     {
       id: 'ai',
       title: 'AI, used on purpose',
-      body: 'I am fascinated by how AI changes the way software gets built: coding tools, agents, skills and the orchestration between them. Smart use matters more to me than more use, and I want to know whether it paid off.',
+      body: 'I’m fascinated by how AI changes the way software gets built: coding tools, agents, skills and the orchestration between them. Smart use matters more to me than more use, and I want to know whether it paid off.',
     },
     {
       id: 'design-in-code',
@@ -123,19 +123,19 @@ export const interests = {
     {
       id: 'platforms',
       title: 'Simple, cohesive platforms',
-      body: 'I have seen software go from on-premise installs to SaaS shipped continuously, and I have a soft spot for one well-built platform over a sprawl of small services.',
+      body: 'I’ve seen software go from on-premise installs to SaaS shipped continuously, and I have a soft spot for one well-built platform over a sprawl of small services.',
     },
     {
       id: 'teams',
       title: 'Teams that enjoy the work',
-      body: 'Mentoring, clear expectations and room to grow are what make a team good. The best tools in the world do not replace having one.',
+      body: 'Good teams come from mentoring, clear expectations and room to grow. I’d take a good team with average tools over the reverse.',
     },
   ] satisfies Interest[],
 };
 
 export const journey = {
   title: 'The route here',
-  body: 'I have worked on web and mobile throughout. The tools changed along the way, and so did the kind of product.',
+  body: 'I’ve worked on web and mobile throughout. The tools changed along the way, and so did the kind of product.',
   paths: [
     {
       id: 'technology',
@@ -148,7 +148,7 @@ export const journey = {
           note: 'Hybrid apps: one web codebase on several platforms.',
         },
         { id: 'angular', name: 'Angular', note: 'Some early Angular for web applications.' },
-        { id: 'react', name: 'React', note: 'Swiftly onto React, and I have stayed.' },
+        { id: 'react', name: 'React', note: 'Swiftly onto React, and I’ve stayed.' },
       ],
     },
     {
