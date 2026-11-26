@@ -118,3 +118,26 @@ test.describe('Responsive layout', () => {
     });
   }
 });
+
+test.describe('Front-end craft section', () => {
+  test('shows the technology path in order', async ({ page }) => {
+    await page.goto('/');
+
+    const steps = page.getByTestId('tech-path').getByRole('listitem');
+    await expect(steps).toHaveCount(4);
+    await expect(steps.first()).toContainText('J2ME');
+    await expect(steps.last()).toContainText('React');
+  });
+});
+
+test.describe('Brands', () => {
+  test('lists the brands worked with, including current and past employers', async ({ page }) => {
+    await page.goto('/');
+
+    const brands = page.getByTestId('brand-list').getByRole('listitem');
+    await expect(brands).toHaveCount(10);
+    for (const name of ['TeamViewer', '1E', 'Tesco', 'NHS']) {
+      await expect(page.getByTestId('brand-list')).toContainText(name);
+    }
+  });
+});

@@ -7,6 +7,6 @@ export const usePageTitle = (title?: string): void => {
   useEffect(() => {
     document.title = title
       ? `${title} | ${SITE_NAME}`
-      : `${SITE_NAME}: engineering leader, AI in software development`;
+      : `${SITE_NAME}: engineering leader, front end and AI in software development`;
   }, [title]);
 };

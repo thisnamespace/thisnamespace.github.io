@@ -4,6 +4,11 @@ import DeliveryLoop from '../DeliveryLoop';
 import { loopIntro, loopStages, profile } from '../../data/content';
 import { fonts } from '../../styles/theme';
 
+/** "One. Two." becomes ["One.", "Two."] */
+const headlineSentences = profile.headline.match(/[^.!?]+[.!?]+/g)?.map((part) => part.trim()) ?? [
+  profile.headline,
+];
+
 const Hero = () => (
   <Box
     component="section"
@@ -32,7 +37,12 @@ const Hero = () => (
             {profile.name}, {profile.role.toLowerCase()}
           </Typography>
           <Typography id="hero-heading" variant="h1">
-            {profile.headline}
+            {headlineSentences.map((sentence) => (
+              // Each sentence starts on its own line so the break never lands mid-thought.
+              <Box component="span" key={sentence} sx={{ display: 'block' }}>
+                {sentence}
+              </Box>
+            ))}
           </Typography>
           <Typography
             sx={{

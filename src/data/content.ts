@@ -1,4 +1,12 @@
-import type { CaseStudy, ExperienceEntry, LoopStage, Principle, Profile } from '../types';
+import type {
+  CaseStudy,
+  CraftFocus,
+  ExperienceEntry,
+  LoopStage,
+  Principle,
+  Profile,
+  TechStep,
+} from '../types';
 
 /**
  * All site copy lives in this file.
@@ -12,8 +20,8 @@ export const profile: Profile = {
   linkedin: 'https://www.linkedin.com/in/michael-day-0b194246',
   github: 'https://github.com/thisnamespace',
   siteUrl: 'https://thisnamespace.com',
-  headline: 'AI in engineering, adopted on purpose.',
-  lead: 'I lead software teams, and I am the person who gets AI into how they design, build and ship. Then I measure whether it paid off: what it cost against the features it delivered, and what reached customers.',
+  headline: 'Fast, clear products. AI adopted on purpose.',
+  lead: 'I lead software teams and I care most about the front end: great user experiences and performance, on web and mobile. I am also the person who gets AI into how those teams design, build and ship, and who measures whether it paid off.',
 };
 
 export const loopIntro = {
@@ -47,10 +55,40 @@ export const loopStages: LoopStage[] = [
   },
 ];
 
+export const craft = {
+  title: 'Front end is still home',
+  body: 'I am passionate about front-end technology, and about two things in particular: great user experiences and performance. I have worked on web and mobile throughout, and followed the tools from J2ME handsets through PhoneGap hybrids and early Angular to React.',
+  pathLabel: 'The route here',
+  path: [
+    { id: 'j2me', name: 'J2ME', note: 'Apps for feature phones, back in the day.' },
+    {
+      id: 'phonegap',
+      name: 'PhoneGap',
+      note: 'Hybrid apps: one web codebase on several platforms.',
+    },
+    { id: 'angular', name: 'Angular', note: 'Some early Angular for web applications.' },
+    { id: 'react', name: 'React', note: 'Swiftly onto React, and I have stayed.' },
+  ] satisfies TechStep[],
+  focus: [
+    {
+      id: 'experience',
+      title: 'Experience first',
+      body: 'To the person using it, the interface is the product. I push for clarity, accessibility and the small details that make something feel right.',
+    },
+    {
+      id: 'performance',
+      title: 'Performance is a feature',
+      body: 'People feel a fast product before they notice anything else about it. I treat speed as a requirement, not something to polish at the end.',
+    },
+  ] satisfies CraftFocus[],
+};
+
 export const clients = {
-  title: 'Built for brands people use every day',
-  body: 'I started as a developer in 2008 and spent my early career building for consumer brands. My leadership work since has been at 1E and now TeamViewer, and the attention to the person on the other side of the screen came with me.',
+  title: 'Brands I have worked with',
+  body: 'I started as a developer in 2008 and spent my early career building for consumer brands people use every day. Since then I have led teams at 1E and now TeamViewer.',
   names: [
+    'TeamViewer',
+    '1E',
     'Gatwick Airport',
     'Tesco',
     'Waitrose',

@@ -17,6 +17,19 @@ export interface LoopStage {
   change: string;
 }
 
+/** One step in the front-end technology path. */
+export interface TechStep {
+  id: string;
+  name: string;
+  note: string;
+}
+
+export interface CraftFocus {
+  id: string;
+  title: string;
+  body: string;
+}
+
 export interface CaseStudy {
   /** URL segment: /work/:slug */
   slug: string;
