@@ -1,33 +1,35 @@
 import { describe, expect, it } from 'vitest';
-import { caseStudies, experience, findCaseStudy, loopStages } from './content';
+import { clients, experience, interests, journey, loopStages, profile } from './content';
+
+const ids = (items: { id: string }[]) => items.map((item) => item.id);
+const isUnique = (values: string[]) => new Set(values).size === values.length;
 
 describe('site content', () => {
-  it('gives every case study a unique, URL-safe slug', () => {
-    const slugs = caseStudies.map((study) => study.slug);
-    expect(new Set(slugs).size).toBe(slugs.length);
-    slugs.forEach((slug) => expect(slug).toMatch(/^[a-z0-9-]+$/));
+  it('has unique ids wherever items are rendered as lists', () => {
+    expect(isUnique(ids(loopStages))).toBe(true);
+    expect(isUnique(ids(interests.items))).toBe(true);
+    expect(isUnique(ids(experience))).toBe(true);
+    expect(isUnique(ids(journey.paths))).toBe(true);
+    journey.paths.forEach((path) => expect(isUnique(ids(path.steps))).toBe(true));
+    expect(isUnique(clients.names)).toBe(true);
   });
 
-  it('gives every case study the content the page needs', () => {
-    caseStudies.forEach((study) => {
-      expect(study.title).not.toBe('');
-      expect(study.summary).not.toBe('');
-      expect(study.overview.length).toBeGreaterThan(0);
-      expect(study.actions.length).toBeGreaterThan(0);
-      expect(study.takeaway).not.toBe('');
+  it('gives every interest a title and a body', () => {
+    interests.items.forEach((item) => {
+      expect(item.title).not.toBe('');
+      expect(item.body).not.toBe('');
     });
   });
 
-  it('finds a case study by slug and returns undefined for unknown slugs', () => {
-    expect(findCaseStudy(caseStudies[0].slug)).toBe(caseStudies[0]);
-    expect(findCaseStudy('does-not-exist')).toBeUndefined();
-    expect(findCaseStudy(undefined)).toBeUndefined();
+  it('keeps private detail off the site', () => {
+    const everything = JSON.stringify({ profile, loopStages, interests, journey, experience });
+
+    // Decided on 27 Nov 2026: no team sizes and no technology stack names.
+    expect(everything).not.toMatch(/\b30 people\b/i);
+    expect(everything).not.toMatch(/postgres|redis/i);
   });
 
-  it('has unique ids for loop stages and experience entries', () => {
-    const stageIds = loopStages.map((stage) => stage.id);
-    const entryIds = experience.map((entry) => entry.id);
-    expect(new Set(stageIds).size).toBe(stageIds.length);
-    expect(new Set(entryIds).size).toBe(entryIds.length);
+  it('uses a contact address on the site domain', () => {
+    expect(profile.email).toMatch(/@thisnamespace\.com$/);
   });
 });

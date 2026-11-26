@@ -21,8 +21,8 @@ test.describe('Navigation', () => {
     await page.goto('/');
 
     for (const [name, id] of [
-      ['Work', '#work'],
-      ['Approach', '#approach'],
+      ['Interests', '#interests'],
+      ['Journey', '#journey'],
       ['Experience', '#experience'],
       ['Contact', '#contact'],
     ]) {
@@ -31,35 +31,23 @@ test.describe('Navigation', () => {
     }
   });
 
-  test('a case study opens from the home page and links back to the work list', async ({
-    page,
-  }) => {
+  test('the hero buttons lead to the interests and contact sections', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByTestId('case-study-link-ai-adoption').click();
-    await expect(page).toHaveURL(/\/work\/ai-adoption$/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Rolling out AI');
-    await expect(page).toHaveTitle(/Rolling out AI/);
+    await page.getByRole('link', { name: 'What I care about' }).click();
+    await expect(page).toHaveURL(/\/#interests$/);
+    await expect(page.locator('#interests')).toBeInViewport();
 
-    await page.getByRole('link', { name: 'All work' }).click();
-    await expect(page).toHaveURL(/\/#work$/);
-    await expect(page.locator('#work')).toBeInViewport();
+    await page.goto('/');
+    await page.getByRole('main').getByRole('link', { name: 'Get in touch' }).click();
+    await expect(page.locator('#contact')).toBeInViewport();
   });
 
-  test('case studies link to each other', async ({ page }) => {
+  test('old case study links land on the home page', async ({ page }) => {
     await page.goto('/work/ai-adoption');
 
-    await page.getByTestId('next-case-study').click();
-    await expect(page).toHaveURL(/\/work\/design-in-code$/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('design team');
-  });
-
-  test('nav links work from a case study page', async ({ page, isMobile }) => {
-    await page.goto('/work/agents-and-skills');
-
-    await followNavLink(page, 'Contact', isMobile);
-    await expect(page).toHaveURL(/\/#contact$/);
-    await expect(page.locator('#contact')).toBeInViewport();
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Fast, clear products.');
   });
 
   test('an unknown address shows the not-found page', async ({ page }) => {
@@ -108,7 +96,7 @@ test.describe('Responsive layout', () => {
     test(`no horizontal scrolling on ${viewport.name}`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
 
-      for (const path of ['/', '/work/ai-adoption']) {
+      for (const path of ['/', '/no-such-page']) {
         await page.goto(path);
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth
@@ -119,7 +107,18 @@ test.describe('Responsive layout', () => {
   }
 });
 
-test.describe('Front-end craft section', () => {
+test.describe('What I care about', () => {
+  test('lists the six interests', async ({ page }) => {
+    await page.goto('/');
+
+    const items = page.getByTestId('interest-list').getByRole('listitem');
+    await expect(items).toHaveCount(6);
+    await expect(page.getByTestId('interest-list')).toContainText('Great user experiences');
+    await expect(page.getByTestId('interest-list')).toContainText('AI, used on purpose');
+  });
+});
+
+test.describe('The route here', () => {
   test('shows the technology path in order', async ({ page }) => {
     await page.goto('/');
 

@@ -60,11 +60,11 @@ const Hero = () => (
           >
             <Button
               component={RouterLink}
-              to={{ pathname: '/', hash: '#work' }}
+              to={{ pathname: '/', hash: '#interests' }}
               variant="contained"
               size="large"
             >
-              Read the case studies
+              What I care about
             </Button>
             <Button
               component={RouterLink}

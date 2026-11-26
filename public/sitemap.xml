@@ -2,27 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thisnamespace.com/</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://thisnamespace.com/work/ai-adoption</loc>
-    <lastmod>2026-11-26</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thisnamespace.com/work/design-in-code</loc>
-    <lastmod>2026-11-26</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thisnamespace.com/work/agents-and-skills</loc>
-    <lastmod>2026-11-26</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thisnamespace.com/work/on-premise-to-saas</loc>
-    <lastmod>2026-11-26</lastmod>
-    <priority>0.8</priority>
   </url>
 </urlset>

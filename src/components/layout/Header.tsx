@@ -35,8 +35,8 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Work', hash: '#work' },
-  { label: 'Approach', hash: '#approach' },
+  { label: 'Interests', hash: '#interests' },
+  { label: 'Journey', hash: '#journey' },
   { label: 'Experience', hash: '#experience' },
   { label: 'Contact', hash: '#contact' },
 ];

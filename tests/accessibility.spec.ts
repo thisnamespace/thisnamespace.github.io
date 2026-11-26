@@ -3,7 +3,6 @@ import AxeBuilder from '@axe-core/playwright';
 
 const PAGES = [
   { name: 'home page', path: '/' },
-  { name: 'case study page', path: '/work/ai-adoption' },
   { name: 'not-found page', path: '/no-such-page' },
 ];
 
@@ -42,13 +41,18 @@ test.describe('Accessibility', () => {
     await expect(page.locator('#main-content')).toHaveCount(1);
   });
 
-  test('a case study can be reached and opened with the keyboard alone', async ({ page }) => {
+  test('the main nav can be used with the keyboard alone', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/');
 
-    await page.getByTestId('case-study-link-design-in-code').focus();
+    await page
+      .getByRole('navigation', { name: 'Main', exact: true })
+      .getByRole('link', { name: 'Journey' })
+      .focus();
     await page.keyboard.press('Enter');
 
-    await expect(page).toHaveURL(/\/work\/design-in-code$/);
+    await expect(page).toHaveURL(/\/#journey$/);
+    await expect(page.locator('#journey')).toBeInViewport();
   });
 
   test('the mobile menu opens, traps nothing, and closes with Escape', async ({ page }) => {

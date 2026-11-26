@@ -1,58 +1,34 @@
 import { Box, Container, Typography } from '@mui/material';
-import type { CraftFocus, TechPath } from '../../types';
+import type { TechPath } from '../../types';
 import { fonts } from '../../styles/theme';
 
-export interface CraftProps {
+export interface JourneyProps {
   title: string;
   body: string;
   /** Sequences shown as timelines, for example technologies and kinds of product. */
   paths: TechPath[];
-  focus: CraftFocus[];
 }
 
-/** Front-end craft: what Michael cares about, and the technologies that led here. */
-const Craft = ({ title, body, paths, focus }: CraftProps) => (
+/** How the work has changed over time, shown as one timeline per path. */
+const Journey = ({ title, body, paths }: JourneyProps) => (
   <Box
     component="section"
-    id="craft"
-    aria-labelledby="craft-heading"
-    sx={{
-      bgcolor: 'background.paper',
-      borderBottom: 1,
-      borderColor: 'divider',
-      py: { xs: 7, md: 11 },
-    }}
+    id="journey"
+    aria-labelledby="journey-heading"
+    sx={{ py: { xs: 7, md: 11 } }}
   >
     <Container maxWidth="lg">
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 5fr) minmax(0, 7fr)' },
-          columnGap: 10,
-          rowGap: 5,
-        }}
-      >
-        <Box>
-          <Typography id="craft-heading" variant="h2">
-            {title}
-          </Typography>
-          <Typography sx={{ mt: 2.5, maxWidth: '32em' }}>{body}</Typography>
-        </Box>
-
-        <Box sx={{ display: 'grid', rowGap: { xs: 3.5, md: 4 }, alignContent: 'start' }}>
-          {focus.map((item) => (
-            <Box key={item.id}>
-              <Typography variant="h3">{item.title}</Typography>
-              <Typography sx={{ mt: 1, maxWidth: '34em' }}>{item.body}</Typography>
-            </Box>
-          ))}
-        </Box>
-      </Box>
+      <Typography id="journey-heading" variant="h2">
+        {title}
+      </Typography>
+      <Typography sx={{ mt: 1.5, maxWidth: '38em' }} color="text.secondary">
+        {body}
+      </Typography>
 
       {paths.map((path, index) => (
-        <Box key={path.id} sx={{ mt: index === 0 ? { xs: 6, md: 8 } : { xs: 5, md: 6 } }}>
+        <Box key={path.id} sx={{ mt: index === 0 ? { xs: 5, md: 7 } : { xs: 5, md: 6 } }}>
           <Typography
-            id={`craft-path-${path.id}`}
+            id={`journey-path-${path.id}`}
             variant="body2"
             sx={{ fontWeight: 600, color: 'secondary.main' }}
           >
@@ -60,7 +36,7 @@ const Craft = ({ title, body, paths, focus }: CraftProps) => (
           </Typography>
           <Box
             component="ol"
-            aria-labelledby={`craft-path-${path.id}`}
+            aria-labelledby={`journey-path-${path.id}`}
             data-testid={`path-${path.id}`}
             sx={{
               listStyle: 'none',
@@ -129,4 +105,4 @@ const Craft = ({ title, body, paths, focus }: CraftProps) => (
   </Box>
 );
 
-export default Craft;
+export default Journey;

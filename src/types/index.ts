@@ -13,8 +13,15 @@ export interface Profile {
 export interface LoopStage {
   id: string;
   name: string;
-  /** What changed at this stage, in one sentence. */
+  /** How AI fits at this stage, in one sentence. */
   change: string;
+}
+
+/** Something Michael cares about: a title and a couple of sentences. */
+export interface Interest {
+  id: string;
+  title: string;
+  body: string;
 }
 
 /** One step in a path. */
@@ -29,30 +36,6 @@ export interface TechPath {
   id: string;
   label: string;
   steps: TechStep[];
-}
-
-export interface CraftFocus {
-  id: string;
-  title: string;
-  body: string;
-}
-
-export interface CaseStudy {
-  /** URL segment: /work/:slug */
-  slug: string;
-  /** Short description of the kind of work, shown beside the title. */
-  area: string;
-  title: string;
-  summary: string;
-  overview: string[];
-  actions: string[];
-  takeaway: string;
-}
-
-export interface Principle {
-  id: string;
-  title: string;
-  body: string;
 }
 
 export interface ExperienceEntry {

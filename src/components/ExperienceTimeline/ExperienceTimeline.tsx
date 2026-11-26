@@ -11,7 +11,12 @@ const ExperienceTimeline = ({ entries, linkedinUrl }: ExperienceTimelineProps) =
     component="section"
     id="experience"
     aria-labelledby="experience-heading"
-    sx={{ py: { xs: 7, md: 11 } }}
+    sx={{
+      bgcolor: 'background.paper',
+      borderTop: 1,
+      borderColor: 'divider',
+      py: { xs: 7, md: 11 },
+    }}
   >
     <Container maxWidth="lg">
       <Typography id="experience-heading" variant="h2">
