@@ -53,7 +53,7 @@ test.describe('Navigation', () => {
   test('an unknown address shows the not-found page', async ({ page }) => {
     await page.goto('/no-such-page');
 
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('That page does not exist.');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('this.page is undefined');
     await page.getByRole('link', { name: 'Go to the home page' }).click();
     await expect(page).toHaveURL(/\/$/);
   });
@@ -297,6 +297,7 @@ test.describe('Pre-built HTML', () => {
 
     expect(response?.status()).toBe(404);
     await expect(page).toHaveTitle('Page not found | Michael Day');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('this.page is undefined');
   });
 });
 
@@ -368,5 +369,33 @@ test.describe('Away from work', () => {
     );
     await expect(page.getByTestId('places-work-trips')).toContainText('Germany, Portugal, India');
     await expect(page.getByTestId('places-travelled')).toContainText('Japan');
+  });
+});
+
+test.describe('The dot follows you', () => {
+  test('the menu marks the section being read, and nothing at the top of the page', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'The inline menu only shows on wide screens.');
+    await page.goto('/');
+
+    const nav = page.getByRole('navigation', { name: 'Main', exact: true });
+    await expect(nav.locator('[aria-current]')).toHaveCount(0);
+
+    await page.evaluate(() =>
+      document.querySelector('#journey')?.scrollIntoView({ block: 'start' })
+    );
+    await expect(nav.getByRole('link', { name: 'Journey' })).toHaveAttribute(
+      'aria-current',
+      'location'
+    );
+    await expect(nav.locator('[aria-current]')).toHaveCount(1);
+  });
+
+  test('the footer shows the same braces logo as the header', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.locator('.site-header svg.logo')).toHaveCount(1);
+    await expect(page.locator('.site-footer svg.logo')).toHaveCount(1);
   });
 });

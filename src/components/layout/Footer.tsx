@@ -1,3 +1,4 @@
+import Logo from '../Logo';
 import { profile } from '../../data/content';
 import { OPEN_SHORTCUTS_EVENT } from '../Shortcuts';
 
@@ -6,17 +7,7 @@ const Footer = () => (
     <div className="wrap site-footer__bar">
       {/* The year is fixed at build time, so the pre-built HTML and the browser agree. */}
       <p className="soft site-footer__sign">
-        <svg
-          className="site-footer__mark"
-          viewBox="0 10 44 12"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <rect x="2" y="11" width="10" height="10" rx="3" />
-          <circle cx="18.5" cy="16" r="3.8" />
-          <rect x="25" y="11" width="17" height="10" rx="3" />
-        </svg>
-        © {__BUILD_YEAR__} {profile.name}
+        <Logo className="site-footer__mark" />© {__BUILD_YEAR__} {profile.name}
       </p>
       <nav aria-label="Elsewhere">
         <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">

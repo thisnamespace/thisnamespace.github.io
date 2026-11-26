@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import Icon, { type IconName } from '../Icon';
+import Logo from '../Logo';
+import useCurrentSection from '../../hooks/useCurrentSection';
 import { useThemeContext, type ThemePreference } from '../../contexts/ThemeContext';
 
 interface NavItem {
@@ -34,6 +36,7 @@ const Header = () => {
   const { themePreference, setThemePreference } = useThemeContext();
   const drawerRef = useRef<HTMLDialogElement>(null);
   const upcoming = nextTheme(themePreference);
+  const currentHash = `#${useCurrentSection()}`;
 
   return (
     <>
@@ -44,17 +47,7 @@ const Header = () => {
       <header className="site-header">
         <div className="wrap site-header__bar">
           <a className="brand" href="/" data-testid="home-link">
-            <svg className="brand__mark" viewBox="0 0 44 32" aria-hidden="true" focusable="false">
-              <path
-                d="M13 3c-4 0-5 2-5 5v4c0 2.5-1.5 4-4 4 2.5 0 4 1.5 4 4v4c0 3 1 5 5 5M31 3c4 0 5 2 5 5v4c0 2.5 1.5 4 4 4-2.5 0-4 1.5-4 4v4c0 3-1 5-5 5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle className="brand__dot" cx="22" cy="16" r="3.6" />
-            </svg>
+            <Logo className="brand__mark" />
             <span>
               <span className="brand__name">thisnamespace</span>
               <span className="brand__person">Michael Day</span>
@@ -64,7 +57,11 @@ const Header = () => {
 
           <nav className="site-nav" aria-label="Main">
             {NAV_ITEMS.map((item) => (
-              <a key={item.hash} href={`/${item.hash}`}>
+              <a
+                key={item.hash}
+                href={`/${item.hash}`}
+                aria-current={item.hash === currentHash ? 'location' : undefined}
+              >
                 {item.label}
               </a>
             ))}
@@ -106,7 +103,12 @@ const Header = () => {
         </div>
         <nav aria-label="Main, mobile">
           {NAV_ITEMS.map((item) => (
-            <a key={item.hash} href={`/${item.hash}`} onClick={() => drawerRef.current?.close()}>
+            <a
+              key={item.hash}
+              href={`/${item.hash}`}
+              aria-current={item.hash === currentHash ? 'location' : undefined}
+              onClick={() => drawerRef.current?.close()}
+            >
               {item.label}
             </a>
           ))}

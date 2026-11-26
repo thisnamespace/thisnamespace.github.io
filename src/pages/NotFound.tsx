@@ -1,7 +1,9 @@
 const NotFound = () => (
   <div className="wrap plain-page">
-    <h1>That page does not exist.</h1>
-    <p>The link may be old, or the address may have a typo. The home page has everything.</p>
+    <h1>
+      <code>this.page</code> is undefined
+    </h1>
+    <p>There’s nothing at this address. The link may be old, or it may have a typo.</p>
     <a className="button button--solid" href="/">
       Go to the home page
     </a>
