@@ -11,8 +11,7 @@ const meta = {
   args: {
     title: craft.title,
     body: craft.body,
-    pathLabel: craft.pathLabel,
-    path: craft.path,
+    paths: craft.paths,
     focus: craft.focus,
   },
 } satisfies Meta<typeof Craft>;
@@ -23,8 +22,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const path = within(canvas.getByTestId('tech-path'));
-    await expect(path.getAllByRole('listitem')).toHaveLength(craft.path.length);
+    const first = craft.paths[0];
+    const path = within(canvas.getByTestId(`path-${first.id}`));
+    await expect(path.getAllByRole('listitem')).toHaveLength(first.steps.length);
   },
 };
 
@@ -32,7 +32,7 @@ export const Mobile: Story = {
   parameters: { viewport: { defaultViewport: 'mobile1' } },
 };
 
-/** Edge case: a shorter path still spans the row evenly. */
-export const TwoSteps: Story = {
-  args: { path: craft.path.slice(2) },
+/** Edge case: a single path still reads correctly. */
+export const OnePath: Story = {
+  args: { paths: craft.paths.slice(0, 1) },
 };

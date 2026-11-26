@@ -90,7 +90,7 @@ test.describe('Navigation', () => {
 
     await expect(page.getByTestId('contact-email')).toHaveAttribute(
       'href',
-      'mailto:info@thisnamespace.com'
+      'mailto:michael@thisnamespace.com'
     );
     await expect(page.locator('#contact').getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
       'href',
@@ -123,10 +123,20 @@ test.describe('Front-end craft section', () => {
   test('shows the technology path in order', async ({ page }) => {
     await page.goto('/');
 
-    const steps = page.getByTestId('tech-path').getByRole('listitem');
+    const steps = page.getByTestId('path-technology').getByRole('listitem');
     await expect(steps).toHaveCount(4);
     await expect(steps.first()).toContainText('J2ME');
     await expect(steps.last()).toContainText('React');
+  });
+
+  test('shows the product path from brand work to one platform', async ({ page }) => {
+    await page.goto('/');
+
+    const steps = page.getByTestId('path-products').getByRole('listitem');
+    await expect(steps).toHaveCount(4);
+    await expect(steps.first()).toContainText('Brand sites and apps');
+    await expect(steps.nth(2)).toContainText('SaaS with CI/CD');
+    await expect(steps.last()).toContainText('One cohesive platform');
   });
 });
 

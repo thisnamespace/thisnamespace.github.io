@@ -24,13 +24,7 @@ const Home = () => {
     <Box id="main-content">
       <Hero />
       <Clients title={clients.title} body={clients.body} names={clients.names} />
-      <Craft
-        title={craft.title}
-        body={craft.body}
-        pathLabel={craft.pathLabel}
-        path={craft.path}
-        focus={craft.focus}
-      />
+      <Craft title={craft.title} body={craft.body} paths={craft.paths} focus={craft.focus} />
       <CaseStudyList studies={caseStudies} />
       <Approach title={approach.title} principles={approach.principles} />
       <ExperienceTimeline entries={experience} linkedinUrl={profile.linkedin} />

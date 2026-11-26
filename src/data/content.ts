@@ -5,7 +5,7 @@ import type {
   LoopStage,
   Principle,
   Profile,
-  TechStep,
+  TechPath,
 } from '../types';
 
 /**
@@ -16,7 +16,7 @@ import type {
 export const profile: Profile = {
   name: 'Michael Day',
   role: 'Engineering leader',
-  email: 'info@thisnamespace.com',
+  email: 'michael@thisnamespace.com',
   linkedin: 'https://www.linkedin.com/in/michael-day-0b194246',
   github: 'https://github.com/thisnamespace',
   siteUrl: 'https://thisnamespace.com',
@@ -57,18 +57,49 @@ export const loopStages: LoopStage[] = [
 
 export const craft = {
   title: 'Front end is still home',
-  body: 'I am passionate about front-end technology, and about two things in particular: great user experiences and performance. I have worked on web and mobile throughout, and followed the tools from J2ME handsets through PhoneGap hybrids and early Angular to React.',
-  pathLabel: 'The route here',
-  path: [
-    { id: 'j2me', name: 'J2ME', note: 'Apps for feature phones, back in the day.' },
+  body: 'I am passionate about front-end technology, and about two things in particular: great user experiences and performance. I have worked on web and mobile throughout, and followed the tools from J2ME handsets through PhoneGap hybrids and early Angular to React. The products changed along the way too: from brand sites and apps, to on-premise platforms, to fully SaaS platforms shipped through CI/CD, and then to one cohesive platform in place of many small services.',
+  paths: [
     {
-      id: 'phonegap',
-      name: 'PhoneGap',
-      note: 'Hybrid apps: one web codebase on several platforms.',
+      id: 'technology',
+      label: 'The technology',
+      steps: [
+        { id: 'j2me', name: 'J2ME', note: 'Apps for feature phones, back in the day.' },
+        {
+          id: 'phonegap',
+          name: 'PhoneGap',
+          note: 'Hybrid apps: one web codebase on several platforms.',
+        },
+        { id: 'angular', name: 'Angular', note: 'Some early Angular for web applications.' },
+        { id: 'react', name: 'React', note: 'Swiftly onto React, and I have stayed.' },
+      ],
     },
-    { id: 'angular', name: 'Angular', note: 'Some early Angular for web applications.' },
-    { id: 'react', name: 'React', note: 'Swiftly onto React, and I have stayed.' },
-  ] satisfies TechStep[],
+    {
+      id: 'products',
+      label: 'The products',
+      steps: [
+        {
+          id: 'brands',
+          name: 'Brand sites and apps',
+          note: 'Web and mobile work for consumer brands.',
+        },
+        {
+          id: 'on-premise',
+          name: 'On-premise platforms',
+          note: 'Enterprise software installed and run by the customer.',
+        },
+        {
+          id: 'saas',
+          name: 'SaaS with CI/CD',
+          note: 'Fully hosted platforms, shipped continuously.',
+        },
+        {
+          id: 'one-platform',
+          name: 'One cohesive platform',
+          note: 'Microservices and modules brought together into a single monolith.',
+        },
+      ],
+    },
+  ] satisfies TechPath[],
   focus: [
     {
       id: 'experience',
@@ -104,19 +135,19 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'ai-adoption',
     area: 'AI adoption, at TeamViewer',
-    title: 'Rolling out AI across engineering, and measuring it',
+    title: 'Rolling out AI in an engineering department, and measuring it',
     summary:
       'Tools, practices and policy introduced together, with reporting that sets cost against what was delivered.',
     overview: [
-      'Giving engineers an AI coding tool is the easy part. At TeamViewer I rolled the tools out alongside the practices and policy that tell people when to reach for them, and I keep pushing adoption across the wider organisation.',
+      'Giving engineers an AI coding tool is the easy part. At TeamViewer, in one department working across the DEX enterprise platform, I rolled the tools out alongside the practices and policy that tell people when to reach for them. I also keep making the case for wider adoption across the organisation.',
       'The aim is smart use, not more use. Usage figures say how much AI a team consumes; they do not say what the business got for it. So I built reporting that sets what we spend on AI against the features it helped deliver, and I am taking that further, towards real-world conversions.',
     ],
     actions: [
-      'Introduced AI coding tools to the engineering team.',
+      'Introduced AI coding tools to the engineers in my department.',
       'Set the practices and policy for AI-assisted work.',
       'Built reports that set AI cost against features delivered.',
       'Extended the measurement towards real-world conversions.',
-      'Kept raising adoption across the organisation, judged on how well the tools are used.',
+      'Keep pushing for wider adoption across the organisation, judged on how well the tools are used.',
     ],
     takeaway:
       'Adoption is a leadership job, not a procurement one. The tools only pay off when people know where they help, the rules are clear, and somebody is checking the return.',
@@ -162,16 +193,18 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'on-premise-to-saas',
     area: 'Platform, at 1E',
-    title: 'Taking an on-premise product to SaaS',
+    title: 'On-premise to SaaS, then one cohesive platform',
     summary:
-      'UI strategy and front-end delivery through 1E’s move from on-premise software to SaaS.',
+      'UI strategy and front-end delivery through 1E’s move from on-premise software to SaaS, then microservices consolidated into a single platform.',
     overview: [
-      'As Head of UI Engineering at 1E I led the UI strategy and front-end delivery while the product moved from on-premise installations to SaaS.',
+      'As Head of UI Engineering at 1E I led the UI strategy and front-end delivery while the product moved from on-premise installations to a fully SaaS platform shipped through CI/CD.',
       'I owned the architectural direction of the core UI systems and component libraries, and kept product, design and platform engineering pulling in the same direction while the ground moved under them.',
+      'Once it was SaaS, I took the platform from a spread of microservices and modules to one cohesive platform: a monolith on Postgres and Redis, so there is one system to build on, ship and run.',
     ],
     actions: [
       'Led UI strategy and front-end delivery through the transition.',
       'Owned the architecture of the core UI systems and component libraries.',
+      'Took the SaaS platform from microservices and modules to one cohesive monolith on Postgres and Redis.',
       'Aligned product, design and platform engineering.',
       'Managed and mentored the front-end engineers doing the work.',
     ],
@@ -212,7 +245,7 @@ export const experience: ExperienceEntry[] = [
     company: 'TeamViewer',
     title: 'Team Manager, Software Development',
     period: 'Jan 2025 to now',
-    note: '1E became part of TeamViewer in 2025. Leading a software development team; technical strategy and team development.',
+    note: '1E became part of TeamViewer in 2025. I lead software development in one department, working across the DEX enterprise platform.',
   },
   {
     id: '1e-head',

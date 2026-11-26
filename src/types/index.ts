@@ -17,11 +17,18 @@ export interface LoopStage {
   change: string;
 }
 
-/** One step in the front-end technology path. */
+/** One step in a path. */
 export interface TechStep {
   id: string;
   name: string;
   note: string;
+}
+
+/** A named sequence of steps, such as the technologies or kinds of product worked on. */
+export interface TechPath {
+  id: string;
+  label: string;
+  steps: TechStep[];
 }
 
 export interface CraftFocus {
