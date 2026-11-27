@@ -399,3 +399,32 @@ test.describe('The dot follows you', () => {
     await expect(page.locator('.site-footer svg.logo')).toHaveCount(1);
   });
 });
+
+test.describe('Security headers', () => {
+  test('every page is sent with a content policy and the standard protections', async ({
+    page,
+  }) => {
+    const response = await page.goto('/');
+    const html = (await response?.text()) ?? '';
+    test.skip(!html.includes('data-page="home"'), 'Only the production server sets headers.');
+
+    const headers = response?.headers() ?? {};
+    const policy = headers['content-security-policy'] ?? '';
+    expect(policy).toContain("default-src 'self'");
+    expect(policy).toContain("frame-ancestors 'none'");
+    expect(policy).toMatch(/script-src 'self' 'sha256-[^']+'/);
+    expect(policy).not.toContain("script-src 'self' 'unsafe-inline'");
+    expect(headers['strict-transport-security']).toContain('max-age=');
+    expect(headers['x-content-type-options']).toBe('nosniff');
+    expect(headers['x-frame-options']).toBe('DENY');
+    expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
+  });
+
+  test('the server config is not readable from outside', async ({ request }) => {
+    const home = await (await request.get('/')).text();
+    test.skip(!home.includes('data-page="home"'), 'Only the production server has a config file.');
+
+    expect((await request.get('/serve.json')).status()).toBe(404);
+    expect((await request.get('/serve.build.json')).status()).toBe(404);
+  });
+});

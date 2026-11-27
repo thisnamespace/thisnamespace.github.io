@@ -48,3 +48,6 @@ storybook-static
 .eslintcache
 
 *storybook.log
+
+# Written by scripts/prerender.mjs
+serve.build.json

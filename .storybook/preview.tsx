@@ -1,8 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '../src/contexts/ThemeContext';
 import { withTheme } from './withTheme';
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/source-serif-4';
+import '../src/styles/fonts.css';
 import '../src/styles/site.css';
 
 const preview: Preview = {

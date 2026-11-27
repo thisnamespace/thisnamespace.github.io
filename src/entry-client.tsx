@@ -1,7 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/source-serif-4';
+import './styles/fonts.css';
 import './styles/site.css';
 import App, { type PageName } from './App';
 

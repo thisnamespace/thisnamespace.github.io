@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { renderToString } from 'react-dom/server';
 import App, { type PageName } from './App';
-import bricolageUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
-import sourceSerifUrl from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
+import bricolageUrl from './assets/fonts/bricolage-grotesque.woff2?url';
+import sourceSerifUrl from './assets/fonts/source-serif-4.woff2?url';
 
 /** Fonts every visitor needs straight away, for preload links in the page head. */
 export const preloadFonts = [bricolageUrl, sourceSerifUrl];

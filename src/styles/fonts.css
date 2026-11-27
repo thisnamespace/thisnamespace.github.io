@@ -1,0 +1,23 @@
+/*
+ * The two site fonts, trimmed to the characters the site uses by scripts/subset-fonts.py.
+ * The list is in src/assets/fonts/charset.json. A character outside it falls back to the
+ * system font, and a unit test catches that before it ships.
+ */
+
+@font-face {
+  font-family: 'Bricolage Grotesque Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('../assets/fonts/bricolage-grotesque.woff2') format('woff2-variations');
+  unicode-range: U+0020-007E, U+00A0, U+00A9, U+00B7, U+2013-2014, U+2018-2019, U+201C-201D, U+2026;
+}
+
+@font-face {
+  font-family: 'Source Serif 4 Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('../assets/fonts/source-serif-4.woff2') format('woff2-variations');
+  unicode-range: U+0020-007E, U+00A0, U+00A9, U+00B7, U+2013-2014, U+2018-2019, U+201C-201D, U+2026;
+}

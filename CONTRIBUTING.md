@@ -151,8 +151,6 @@ git push
 ### Component Structure
 
 ```tsx
-import { ComponentProps } from '@mui/material';
-
 interface MyComponentProps {
   title: string;
   onClick?: () => void;
@@ -169,20 +167,10 @@ export default MyComponent;
 
 ### Styling
 
-- Use Material-UI's `sx` prop for styling
-- Use theme values for colors, spacing, and breakpoints
-- Make all components responsive using breakpoint objects
-
-```tsx
-<Box
-  sx={{
-    py: { xs: 2, sm: 4, md: 6 },
-    bgcolor: 'background.paper',
-  }}
->
-  Content
-</Box>
-```
+- All styles live in one stylesheet, `src/styles/site.css`. There is no CSS-in-JS.
+- Use the CSS variables at the top of that file for colours, fonts and spacing (`--brand`, `--accent`, `--paper`, `--ink`).
+- Gold (`--accent`) marks what is live or clickable. Don't use it for decoration.
+- Write mobile first and widen at the `56.25rem` breakpoint.
 
 ### Accessibility
 
