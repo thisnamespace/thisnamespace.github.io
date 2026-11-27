@@ -34,7 +34,7 @@ if (prebuiltPage) {
 // A hello for anyone who opens the console.
 // eslint-disable-next-line no-console -- deliberate greeting, not debug output
 console.info(
-  '%c[ ··· ] thisnamespace',
-  'font-weight:700;color:#0E5C6B',
+  '%c{•} thisnamespace',
+  'font-weight:700;color:#14503C',
   '\nHello. Press ? on the page for keyboard shortcuts. The source is on GitHub: github.com/thisnamespace'
 );

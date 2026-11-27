@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 import Header from './Header';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 
 const meta = {
   title: 'Components/Layout/Header',
@@ -22,6 +23,15 @@ export const Default: Story = {
 
 /** Each press moves to the next theme setting: light, dark, then match system. */
 export const ThemeCycle: Story = {
+  // Its own provider, imported the same way the Header imports the context, so the button
+  // talks to the same store in the Vitest browser runner.
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByTestId('theme-button');
     const before = button.getAttribute('data-theme-setting');

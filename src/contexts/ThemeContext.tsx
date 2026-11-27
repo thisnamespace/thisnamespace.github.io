@@ -16,7 +16,13 @@ interface ThemeContextType {
   mode: ThemeMode;
   /** What the reader chose; "system" follows the device. */
   themePreference: ThemePreference;
-  setThemePreference: (preference: ThemePreference) => void;
+  /**
+   * Pass a value, or a function of the current setting. The function form reads the
+   * setting at the moment of the call, so two quick presses never act on a stale value.
+   */
+  setThemePreference: (
+    next: ThemePreference | ((current: ThemePreference) => ThemePreference)
+  ) => void;
 }
 
 const STORAGE_KEY = 'themePreference';
@@ -93,7 +99,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     applyToDocument(themePreference);
   }, [themePreference]);
 
-  const setThemePreference = useCallback((preference: ThemePreference) => {
+  const setThemePreference = useCallback<ThemeContextType['setThemePreference']>((next) => {
+    const preference = typeof next === 'function' ? next(readPreference()) : next;
     try {
       localStorage.setItem(STORAGE_KEY, preference);
     } catch {

@@ -70,7 +70,7 @@ const Header = () => {
           <button
             type="button"
             className="icon-button"
-            onClick={() => setThemePreference(upcoming)}
+            onClick={() => setThemePreference(nextTheme)}
             aria-label={`Theme: ${THEME_LABEL[themePreference]}. Switch to ${THEME_LABEL[upcoming]}.`}
             data-testid="theme-button"
             data-theme-setting={themePreference}

@@ -20,6 +20,16 @@ const TestComponent = () => {
       <button type="button" onClick={() => setThemePreference('system')}>
         Set System
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          // Two changes before any re-render: the second must build on the first.
+          setThemePreference((current) => (current === 'system' ? 'light' : 'dark'));
+          setThemePreference((current) => (current === 'system' ? 'light' : 'dark'));
+        }}
+      >
+        Step twice
+      </button>
     </div>
   );
 };
@@ -142,5 +152,19 @@ describe('ThemeContext', () => {
       expect(screen.getByTestId('preference')).toHaveTextContent('system');
       expect(screen.getByTestId('mode')).toHaveTextContent('dark'); // matchMedia mocked to dark
     });
+  });
+
+  it('applies quick successive changes to the latest setting, not a stale one', async () => {
+    const user = userEvent.setup();
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    await user.click(screen.getByText('Step twice'));
+
+    await waitFor(() => expect(screen.getByTestId('preference')).toHaveTextContent('dark'));
+    expect(localStorage.getItem('themePreference')).toBe('dark');
   });
 });

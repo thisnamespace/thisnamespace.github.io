@@ -26,7 +26,10 @@ const preview: Preview = {
       toc: true,
     },
   },
+  // The first decorator sits closest to the story, so withTheme is inside the provider and
+  // the toolbar's theme switch reaches it. (It was outside, so the switch did nothing.)
   decorators: [
+    withTheme,
     (Story) => (
       <ThemeProvider>
         <div style={{ minHeight: '100vh' }}>
@@ -34,7 +37,6 @@ const preview: Preview = {
         </div>
       </ThemeProvider>
     ),
-    withTheme,
   ],
   globalTypes: {
     theme: {

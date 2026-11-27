@@ -9,8 +9,23 @@ const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+// The production build swaps React for Preact, which offers the same API at a quarter of the
+// size: 18 kB of script for visitors in place of 71 kB. The build script sets PREACT=1.
+// The dev server, unit tests and Storybook keep React, for its warnings and dev tools; the
+// Playwright tests run against the Preact build, so what visitors get is what gets tested.
+const preactAliases = {
+  'react/jsx-runtime': 'preact/jsx-runtime',
+  'react/jsx-dev-runtime': 'preact/jsx-dev-runtime',
+  'react-dom/client': 'preact/compat/client',
+  'react-dom/server': 'preact/compat/server',
+  'react-dom': 'preact/compat',
+  react: 'preact/compat',
+};
+
 export default defineConfig({
   plugins: [react()],
+  resolve: { alias: process.env.PREACT === '1' ? preactAliases : {} },
+  ssr: process.env.PREACT === '1' ? { noExternal: true } : {},
   define: {
     // Fixed at build time so the pre-built HTML and the browser render the same year.
     __BUILD_YEAR__: new Date().getFullYear(),

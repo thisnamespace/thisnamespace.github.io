@@ -16,7 +16,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('heading', { level: 1 })).toHaveTextContent(profile.headline);
+    // The headline is split into letters for the animation; its accessible name is the sentence.
+    await expect(
+      canvas.getByRole('heading', { level: 1, name: profile.headline })
+    ).toBeInTheDocument();
     await expect(canvas.getByRole('link', { name: 'Get in touch' })).toHaveAttribute(
       'href',
       '#contact'

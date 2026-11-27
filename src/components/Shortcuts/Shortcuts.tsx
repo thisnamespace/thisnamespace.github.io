@@ -53,7 +53,7 @@ const goTo = (hash: string) => {
 const Shortcuts = ({ title, toggleLabel, keys }: ShortcutsProps) => {
   const titleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const { themePreference, setThemePreference } = useThemeContext();
+  const { setThemePreference } = useThemeContext();
   // Starts on, the same as the pre-built HTML, then picks up the saved choice once mounted.
   const [enabled, setEnabled] = useState(true);
   const [ready, setReady] = useState(false);
@@ -95,7 +95,7 @@ const Shortcuts = ({ title, toggleLabel, keys }: ShortcutsProps) => {
         return;
       }
       if (event.key.toLowerCase() === 't') {
-        setThemePreference(nextTheme(themePreference));
+        setThemePreference(nextTheme);
         return;
       }
       const match = keys.find((item) => item.hash && item.key === event.key);
@@ -113,7 +113,7 @@ const Shortcuts = ({ title, toggleLabel, keys }: ShortcutsProps) => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener(OPEN_SHORTCUTS_EVENT, open);
     };
-  }, [enabled, keys, ready, setThemePreference, themePreference]);
+  }, [enabled, keys, ready, setThemePreference]);
 
   return (
     <dialog ref={dialogRef} className="shortcuts" aria-labelledby={titleId}>
