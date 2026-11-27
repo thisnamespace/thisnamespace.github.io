@@ -214,12 +214,18 @@ test.describe('Delivery loop', () => {
 });
 
 test.describe('Page speed', () => {
-  test('reports live numbers for this visit', async ({ page }) => {
+  test('reports live numbers for this visit', async ({ page, browserName }) => {
     await page.goto('/');
 
+    // Firefox and Safari don't measure layout shift, so the readout says so in place of a
+    // number. Chromium measures everything, so there every figure must be a number.
+    const unsupported = 'Not reported by this browser';
+    const orUnsupported = (pattern: RegExp) =>
+      browserName === 'chromium' ? pattern : new RegExp(`${pattern.source}|${unsupported}`);
+
     await expect(page.getByTestId('metric-load')).toContainText(/\d+\.\d+ s/);
-    await expect(page.getByTestId('metric-paint')).toContainText(/\d+\.\d+ s/);
-    await expect(page.getByTestId('metric-shift')).toContainText(/\d\.\d\d/);
+    await expect(page.getByTestId('metric-paint')).toContainText(orUnsupported(/\d+\.\d+ s/));
+    await expect(page.getByTestId('metric-shift')).toContainText(orUnsupported(/\d\.\d\d/));
     await expect(page.getByTestId('metric-weight')).toContainText(/kB|MB|From cache/);
   });
 });
